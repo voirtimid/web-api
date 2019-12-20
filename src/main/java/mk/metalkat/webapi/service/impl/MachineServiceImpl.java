@@ -40,7 +40,7 @@ public class MachineServiceImpl implements MachineService {
             prevMachine.setName(machine.getName());
             prevMachine.setDescription(machine.getDescription());
             prevMachine.setShortName(machine.getShortName());
-            return prevMachine;
+            return machineRepository.save(prevMachine);
         }
         return null;
     }
