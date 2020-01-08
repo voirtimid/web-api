@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -25,8 +26,18 @@ public class Task {
     private Job job;
 
     @OneToOne
+    @JoinColumn(name = "machine_id")
     private Machine machine;
 
-    @ManyToMany(mappedBy = "tasks")
-    private List<Employee> employees;
+    @OneToOne
+    @JoinColumn(name = "employee_id")
+    private Employee employee;
+
+    @OneToOne
+    @JoinColumn(name = "cnc_code_id")
+    private CNC cncCode;
+
+    private Date startDate;
+
+    private Date endDate;
 }

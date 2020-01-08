@@ -19,12 +19,16 @@ public class Employee {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long employeeId;
 
-    private String name;
+    private String firstName;
 
-    private LocalDateTime birthday;
+    private String lastName;
+
+    private String dayOfBirth;
+
+    private boolean isAdmin;
 
     private String positionDescription;
 
-    @ManyToMany
-    private List<Task> tasks;
+//    @OneToMany
+//    private List<Task> tasks;
 }

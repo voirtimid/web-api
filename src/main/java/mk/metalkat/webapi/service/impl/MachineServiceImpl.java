@@ -32,22 +32,31 @@ public class MachineServiceImpl implements MachineService {
     }
 
     @Override
-    public Machine update(Machine machine) {
-        Optional<Machine> optionalMachine = machineRepository.findById(machine.getMachineId());
+    public Machine update(Long machineId, Machine machine) {
+        if (machineId.equals(machine.getMachineId())) {
+            Optional<Machine> optionalMachine = machineRepository.findById(machine.getMachineId());
 
-        if (optionalMachine.isPresent()) {
-            Machine prevMachine = optionalMachine.get();
-            prevMachine.setName(machine.getName());
-            prevMachine.setDescription(machine.getDescription());
-            prevMachine.setShortName(machine.getShortName());
-            return machineRepository.save(prevMachine);
+            if (optionalMachine.isPresent()) {
+                Machine prevMachine = optionalMachine.get();
+                prevMachine.setName(machine.getName());
+                prevMachine.setDescription(machine.getDescription());
+                prevMachine.setShortName(machine.getShortName());
+                return machineRepository.save(prevMachine);
+            }
         }
         return null;
     }
 
     @Override
-    public void delete(Machine machine) {
-        machineRepository.findById(machine.getMachineId()).ifPresent(machineRepository::delete);
+    public Machine delete(Machine machine) {
+        Optional<Machine> optionalMachine = machineRepository.findById(machine.getMachineId());
+
+        if (optionalMachine.isPresent()) {
+            machineRepository.delete(machine);
+            return optionalMachine.get();
+        }
+
+        return null;
     }
 
     @Override

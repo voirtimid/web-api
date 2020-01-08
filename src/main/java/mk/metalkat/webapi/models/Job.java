@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -15,11 +16,15 @@ import java.util.List;
 public class Job {
 
     @Id
-    @Column(name = "job_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long jobId;
 
     private String name;
 
-    @OneToMany(mappedBy = "job")
+    @OneToMany
     private List<Task> tasks;
+
+    private Date startDate;
+
+    private Date endDate;
 }

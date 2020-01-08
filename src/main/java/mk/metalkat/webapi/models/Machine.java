@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -22,4 +23,7 @@ public class Machine {
     private String shortName;
 
     private String description;
+
+//    @OneToMany
+//    private List<Task> tasks;
 }

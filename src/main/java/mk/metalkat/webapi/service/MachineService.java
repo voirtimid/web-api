@@ -2,6 +2,7 @@ package mk.metalkat.webapi.service;
 
 import mk.metalkat.webapi.models.Machine;
 
+import javax.crypto.Mac;
 import java.util.List;
 
 public interface MachineService {
@@ -10,11 +11,9 @@ public interface MachineService {
 
     Machine save(Machine machine);
 
-    Machine update(Machine machine);
+    Machine update(Long machineId, Machine machine);
 
-    void delete(Machine machine);
+    Machine delete(Machine machine);
 
     List<Machine> getAll();
-
-
 }
