@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -22,9 +23,17 @@ public class Job {
     private String name;
 
     @OneToMany
-    private List<Task> tasks;
+    private List<Task> tasks = new ArrayList<>();
 
     private Date startDate;
 
     private Date endDate;
+
+    public boolean addTask(Task task) {
+        return tasks.add(task);
+    }
+
+    public boolean removeTask(Task task) {
+        return tasks.remove(task);
+    }
 }

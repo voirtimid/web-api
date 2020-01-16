@@ -1,5 +1,6 @@
 package mk.metalkat.webapi.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,6 +22,7 @@ public class Task {
 
     private String name;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "job_id")
     private Job job;

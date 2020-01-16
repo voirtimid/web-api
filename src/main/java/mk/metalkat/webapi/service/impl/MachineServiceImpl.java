@@ -48,14 +48,14 @@ public class MachineServiceImpl implements MachineService {
     }
 
     @Override
-    public Machine delete(Machine machine) {
-        Optional<Machine> optionalMachine = machineRepository.findById(machine.getMachineId());
+    public Machine delete(Long machineId) {
+        Optional<Machine> optionalMachine = machineRepository.findById(machineId);
 
         if (optionalMachine.isPresent()) {
-            machineRepository.delete(machine);
-            return optionalMachine.get();
+            Machine toDelete = optionalMachine.get();
+            machineRepository.delete(toDelete);
+            return toDelete;
         }
-
         return null;
     }
 

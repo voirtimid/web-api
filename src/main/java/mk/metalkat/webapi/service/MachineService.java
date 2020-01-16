@@ -13,7 +13,7 @@ public interface MachineService {
 
     Machine update(Long machineId, Machine machine);
 
-    Machine delete(Machine machine);
+    Machine delete(Long machineId);
 
     List<Machine> getAll();
 }

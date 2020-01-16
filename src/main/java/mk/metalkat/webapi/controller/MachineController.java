@@ -36,9 +36,9 @@ public class MachineController {
         return ResponseEntity.ok(updateMachine);
     }
 
-    @DeleteMapping
-    public Machine deleteMachine(@RequestBody Machine machine) {
-        return machineService.delete(machine);
+    @DeleteMapping(value = "{machineId}")
+    public Machine deleteMachine(@PathVariable Long machineId) {
+        return machineService.delete(machineId);
     }
 
     @GetMapping
