@@ -23,7 +23,4 @@ public class Machine {
     private String shortName;
 
     private String description;
-
-//    @OneToMany
-//    private List<Task> tasks;
 }

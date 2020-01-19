@@ -10,6 +10,7 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/api/cncs")
 @RequiredArgsConstructor
+@CrossOrigin("http://localhost:3000")
 public class CNCController {
 
     private final CNCService cncService;

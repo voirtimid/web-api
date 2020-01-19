@@ -3,10 +3,9 @@ package mk.metalkat.webapi.models;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import mk.metalkat.webapi.models.authentication.User;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
-import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -29,6 +28,7 @@ public class Employee {
 
     private String positionDescription;
 
-//    @OneToMany
-//    private List<Task> tasks;
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 }

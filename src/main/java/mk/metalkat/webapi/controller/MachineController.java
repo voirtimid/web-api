@@ -12,6 +12,7 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/api/machines")
 @RequiredArgsConstructor
+@CrossOrigin("http://localhost:3000")
 public class MachineController {
 
     private final MachineService machineService;
