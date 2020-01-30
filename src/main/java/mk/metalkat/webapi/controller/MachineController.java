@@ -12,7 +12,7 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/api/machines")
 @RequiredArgsConstructor
-@CrossOrigin("http://localhost:3000")
+@CrossOrigin(origins = "http://localhost:3000")
 public class MachineController {
 
     private final MachineService machineService;
@@ -24,7 +24,6 @@ public class MachineController {
 
     @PostMapping
     public Machine createNewMachine(@RequestBody Machine machine) {
-
         return machineService.save(machine);
     }
 

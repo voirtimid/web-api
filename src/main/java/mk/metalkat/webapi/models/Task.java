@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -42,4 +41,10 @@ public class Task {
     private Date startDate;
 
     private Date endDate;
+
+    private String measuringList;
+
+    private String usedTools;
+
+    private double pieceByMinute;
 }

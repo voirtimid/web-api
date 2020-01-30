@@ -5,8 +5,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Data
@@ -20,14 +21,28 @@ public class Job {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long jobId;
 
-    private String name;
+    private String jobName;
+
+    private String committeeName;
+
+    private String theirClaimId;
+
+    private String theirTechnology;
+
+    private String myTechnology;
+
+    private String image;
+
+    private String materials;
 
     @OneToMany
     private List<Task> tasks = new ArrayList<>();
 
-    private Date startDate;
+    private LocalDateTime startDate;
 
-    private Date endDate;
+    private LocalDateTime endDate;
+
+    private LocalTime estimation;
 
     public boolean addTask(Task task) {
         return tasks.add(task);
