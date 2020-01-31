@@ -18,8 +18,8 @@ public class MachineController {
     private final MachineService machineService;
 
     @GetMapping(value = "/{machineId}")
-    public ResponseEntity<Machine> getMachineById(@PathVariable("machineId") Long machineId) {
-        return ResponseEntity.ok(machineService.getById(machineId));
+    public Machine getMachineById(@PathVariable("machineId") Long machineId) {
+        return machineService.getById(machineId);
     }
 
     @PostMapping
@@ -28,15 +28,11 @@ public class MachineController {
     }
 
     @PutMapping(value = "/{machineId}")
-    public ResponseEntity<Machine> updateMachine(@PathVariable("machineId") Long machineId, @RequestBody Machine machine) {
-        Machine updateMachine = machineService.update(machineId, machine);
-        if (updateMachine == null) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        }
-        return ResponseEntity.ok(updateMachine);
+    public Machine updateMachine(@PathVariable("machineId") Long machineId, @RequestBody Machine machine) {
+        return machineService.update(machineId, machine);
     }
 
-    @DeleteMapping(value = "{machineId}")
+    @DeleteMapping(value = "/{machineId}")
     public Machine deleteMachine(@PathVariable Long machineId) {
         return machineService.delete(machineId);
     }
