@@ -20,8 +20,6 @@ public class Employee {
 
     private String lastName;
 
-    private String dayOfBirth;
-
     private boolean isAdmin;
 
     private String positionDescription;
