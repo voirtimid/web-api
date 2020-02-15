@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -38,11 +39,11 @@ public class Job {
     @OneToMany
     private List<Task> tasks = new ArrayList<>();
 
-    private LocalDateTime startDate;
+    private LocalDate startDate;
 
-    private LocalDateTime endDate;
+    private LocalDate endDate;
 
-    private LocalTime estimation;
+    private Double estimation;
 
     public boolean addTask(Task task) {
         return tasks.add(task);
