@@ -17,5 +17,5 @@ public interface JobService {
 
     List<Job> getAllJobs();
 
-    Job addTask(Long jobId, Long taskId);
+    Job addTask(Long jobId, Task task);
 }

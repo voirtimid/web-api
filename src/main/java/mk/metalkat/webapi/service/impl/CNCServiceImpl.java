@@ -1,7 +1,8 @@
 package mk.metalkat.webapi.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import mk.metalkat.webapi.models.CNC;
+import mk.metalkat.webapi.exceptions.ModelNotFoundException;
+import mk.metalkat.webapi.models.Cnc;
 import mk.metalkat.webapi.repository.CNCRepository;
 import mk.metalkat.webapi.service.CNCService;
 import org.springframework.stereotype.Service;
@@ -16,37 +17,41 @@ public class CNCServiceImpl implements CNCService {
     private final CNCRepository cncRepository;
 
     @Override
-    public CNC getCNC(Long id) {
-        return cncRepository.findById(id).orElse(null);
+    public Cnc getCNC(Long id) {
+        return cncRepository.findById(id).orElseThrow(() -> new ModelNotFoundException("Cnc code does not exist!"));
     }
 
     @Override
-    public CNC save(CNC cnc) {
+    public Cnc findByFileName(String fileName) {
+        return cncRepository.findByFileNameEquals(fileName);
+    }
+
+    @Override
+    public Cnc save(Cnc cnc) {
         return cncRepository.save(cnc);
     }
 
     @Override
-    public CNC update(Long cncId, CNC cnc) {
+    public Cnc update(Long cncId, Cnc cnc) {
         if (!cncRepository.findById(cncId).isPresent() || !cncId.equals(cnc.getCncId())) {
-            return null;
+            throw new ModelNotFoundException("Cnc code does not exist!");
         }
-
         return cncRepository.save(cnc);
     }
 
     @Override
-    public CNC delete(Long cncId) {
-        Optional<CNC> optionCNC = cncRepository.findById(cncId);
+    public Cnc delete(Long cncId) {
+        Optional<Cnc> optionCNC = cncRepository.findById(cncId);
         if (optionCNC.isPresent()) {
-            CNC cnc = optionCNC.get();
+            Cnc cnc = optionCNC.get();
             cncRepository.delete(cnc);
             return cnc;
         }
-        return null;
+        throw new ModelNotFoundException("Cnc code does not exist!");
     }
 
     @Override
-    public List<CNC> getAll() {
+    public List<Cnc> getAll() {
         return cncRepository.findAll();
     }
 }

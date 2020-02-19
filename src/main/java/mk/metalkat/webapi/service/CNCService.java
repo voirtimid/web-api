@@ -1,18 +1,20 @@
 package mk.metalkat.webapi.service;
 
-import mk.metalkat.webapi.models.CNC;
+import mk.metalkat.webapi.models.Cnc;
 
 import java.util.List;
 
 public interface CNCService {
 
-    CNC getCNC(Long id);
+    Cnc getCNC(Long id);
 
-    CNC save(CNC cnc);
+    Cnc findByFileName(String fileName);
 
-    CNC update(Long cncId, CNC cnc);
+    Cnc save(Cnc cnc);
 
-    CNC delete(Long cncId);
+    Cnc update(Long cncId, Cnc cnc);
 
-    List<CNC> getAll();
+    Cnc delete(Long cncId);
+
+    List<Cnc> getAll();
 }

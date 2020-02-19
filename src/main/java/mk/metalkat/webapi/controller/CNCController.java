@@ -1,7 +1,7 @@
 package mk.metalkat.webapi.controller;
 
 import lombok.RequiredArgsConstructor;
-import mk.metalkat.webapi.models.CNC;
+import mk.metalkat.webapi.models.Cnc;
 import mk.metalkat.webapi.service.CNCService;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,27 +16,32 @@ public class CNCController {
     private final CNCService cncService;
 
     @GetMapping(value = "/{cncId}")
-    public CNC getCncById(@PathVariable("cncId") Long cncId) {
+    public Cnc getCncById(@PathVariable("cncId") Long cncId) {
         return cncService.getCNC(cncId);
     }
 
+    @GetMapping(value = "/file/{fileName}")
+    public Cnc findByFileName(@PathVariable("fileName") String fileName) {
+        return cncService.findByFileName(fileName);
+    }
+
     @PostMapping
-    public CNC createNewCnc(@RequestBody CNC cnc) {
+    public Cnc createNewCnc(@RequestBody Cnc cnc) {
         return cncService.save(cnc);
     }
 
     @PutMapping(value = "/{cncId}")
-    public CNC updateCnc(@PathVariable("cncId") Long cncId, @RequestBody CNC cnc) {
+    public Cnc updateCnc(@PathVariable("cncId") Long cncId, @RequestBody Cnc cnc) {
         return cncService.update(cncId, cnc);
     }
 
     @DeleteMapping(value = "/{cncId}")
-    public CNC deleteCnc(@PathVariable Long cncId) {
+    public Cnc deleteCnc(@PathVariable Long cncId) {
         return cncService.delete(cncId);
     }
 
     @GetMapping
-    public List<CNC> getAllCncs() {
+    public List<Cnc> getAllCncs() {
         return cncService.getAll();
     }
 

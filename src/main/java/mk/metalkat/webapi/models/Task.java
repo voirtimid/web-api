@@ -4,8 +4,11 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.apache.tomcat.jni.Local;
 
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Date;
 
 @Data
@@ -19,7 +22,7 @@ public class Task {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long taskId;
 
-    private String name;
+    private String taskName;
 
     @JsonIgnore
     @ManyToOne
@@ -36,15 +39,27 @@ public class Task {
 
     @OneToOne
     @JoinColumn(name = "cnc_code_id")
-    private CNC cncCode;
+    private Cnc cncCode;
 
-    private Date startDate;
+    private LocalDate startDate;
 
-    private Date endDate;
+    private LocalDate endDate;
+
+    private LocalTime startWorkTime;
+
+    private LocalTime endWorkTime;
+
+    private Long totalWorkTime;
 
     private String measuringList;
 
     private String usedTools;
 
-    private double pieceByMinute;
+    private Double pieceByMinute;
+
+    private Double priceByPiece;
+
+    private Double totalGain;
+
+    private boolean isFinished;
 }

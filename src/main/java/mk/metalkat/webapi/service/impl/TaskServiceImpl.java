@@ -1,7 +1,7 @@
 package mk.metalkat.webapi.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import mk.metalkat.webapi.models.CNC;
+import mk.metalkat.webapi.models.Cnc;
 import mk.metalkat.webapi.models.Employee;
 import mk.metalkat.webapi.models.Machine;
 import mk.metalkat.webapi.models.Task;
@@ -97,11 +97,11 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public Task setCncCode(Long taskId, Long cncId) {
         Optional<Task> optionTask = taskRepository.findById(taskId);
-        Optional<CNC> optionCncCode = cncRepository.findById(cncId);
+        Optional<Cnc> optionCncCode = cncRepository.findById(cncId);
 
         if (optionTask.isPresent() && optionCncCode.isPresent()) {
             Task task = optionTask.get();
-            CNC cnc = optionCncCode.get();
+            Cnc cnc = optionCncCode.get();
             task.setCncCode(cnc);
             return taskRepository.save(task);
         }

@@ -6,8 +6,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,8 +30,6 @@ public class Job {
 
     private String myTechnology;
 
-    private String image;
-
     private String materials;
 
     @OneToMany
@@ -44,6 +40,8 @@ public class Job {
     private LocalDate endDate;
 
     private Double estimation;
+
+    private boolean isFinished;
 
     public boolean addTask(Task task) {
         return tasks.add(task);

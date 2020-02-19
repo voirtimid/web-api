@@ -5,6 +5,7 @@ import mk.metalkat.webapi.models.Task;
 import mk.metalkat.webapi.service.TaskService;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalTime;
 import java.util.List;
 
 @RestController
@@ -53,5 +54,24 @@ public class TaskController {
     @PutMapping(value = "/{taskId}/addCnc/{cncId}")
     public Task addCncCode(@PathVariable("taskId") Long taskId, @PathVariable("cncId") Long cncId) {
         return taskService.setCncCode(taskId, cncId);
+    }
+
+    @GetMapping(value = "/{taskId}/startWorkTime")
+    public Task startWorkTime(@PathVariable("taskId") Long taskId) {
+        Task task = taskService.getTask(taskId);
+        task.setStartWorkTime(LocalTime.now());
+        return taskService.updateTask(taskId, task);
+    }
+
+    @GetMapping(value = "/{taskId}/endWorkTime")
+    public Task endWorkTime(@PathVariable("taskId") Long taskId) {
+        Task task = taskService.getTask(taskId);
+        task.setEndWorkTime(LocalTime.now());
+
+        long startWorkTime = task.getStartWorkTime().toNanoOfDay();
+        long endWorkTime = task.getEndWorkTime().toNanoOfDay();
+
+        task.setTotalWorkTime(endWorkTime - startWorkTime);
+        return taskService.updateTask(taskId, task);
     }
 }

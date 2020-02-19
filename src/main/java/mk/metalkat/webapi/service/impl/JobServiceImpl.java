@@ -56,16 +56,16 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
-    public Job addTask(Long jobId, Long taskId) {
+    public Job addTask(Long jobId, Task task) {
         Optional<Job> optionJob = jobRepository.findById(jobId);
-        Optional<Task> optionTask = taskRepository.findById(taskId);
+        Optional<Task> optionTask = taskRepository.findById(task.getTaskId());
 
         if (optionJob.isPresent() && optionTask.isPresent()) {
             Job job = optionJob.get();
-            Task task = optionTask.get();
-            if (job.addTask(task)) {
-                task.setJob(job);
-                taskRepository.save(task);
+            Task newTask = optionTask.get();
+            if (job.addTask(newTask)) {
+                newTask.setJob(job);
+                taskRepository.save(newTask);
                 jobRepository.save(job);
                 return job;
             }

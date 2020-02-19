@@ -2,6 +2,7 @@ package mk.metalkat.webapi.controller;
 
 import lombok.RequiredArgsConstructor;
 import mk.metalkat.webapi.models.Job;
+import mk.metalkat.webapi.models.Task;
 import mk.metalkat.webapi.service.JobService;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,8 +41,8 @@ public class JobController {
         return jobService.deleteJob(jobId);
     }
 
-    @PutMapping(value = "/{jobId}/addTask/{taskId}")
-    public Job addTaskToJob(@PathVariable("jobId") Long jobId, @PathVariable("taskId") Long taskId) {
-        return jobService.addTask(jobId, taskId);
+    @PutMapping(value = "/{jobId}/addTask")
+    public Job addTaskToJob(@PathVariable("jobId") Long jobId, @RequestBody Task task) {
+        return jobService.addTask(jobId, task);
     }
 }
