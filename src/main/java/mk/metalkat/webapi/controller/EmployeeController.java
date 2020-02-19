@@ -2,6 +2,7 @@ package mk.metalkat.webapi.controller;
 
 import lombok.RequiredArgsConstructor;
 import mk.metalkat.webapi.models.Employee;
+import mk.metalkat.webapi.models.Task;
 import mk.metalkat.webapi.service.EmployeeService;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,5 +41,9 @@ public class EmployeeController {
         return employeeService.deleteEmployee(employeeId);
     }
 
+    @GetMapping(value = "/{employeeId}/tasks")
+    public List<Task> getAllTasksForEmployee(@PathVariable("employeeId") Long employeeId) {
+        return employeeService.getTasksForEmployee(employeeId);
+    }
 
 }

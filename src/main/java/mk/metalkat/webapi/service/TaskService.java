@@ -1,6 +1,7 @@
 package mk.metalkat.webapi.service;
 
 import mk.metalkat.webapi.models.Task;
+import mk.metalkat.webapi.models.dto.TaskDTO;
 
 import java.util.List;
 
@@ -8,7 +9,7 @@ public interface TaskService {
 
     Task getTask(Long taskId);
 
-    Task createTask(Task task);
+    Task createTask(TaskDTO task);
 
     Task updateTask(Long taskId, Task task);
 

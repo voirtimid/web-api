@@ -45,4 +45,9 @@ public class JobController {
     public Job addTaskToJob(@PathVariable("jobId") Long jobId, @RequestBody Task task) {
         return jobService.addTask(jobId, task);
     }
+
+    @GetMapping(value = "/{jobId}/tasks")
+    public List<Task> getAllTaskForJob(@PathVariable("jobId") Long jobId) {
+        return jobService.getTaskForJob(jobId);
+    }
 }

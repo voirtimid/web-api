@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -71,5 +72,11 @@ public class JobServiceImpl implements JobService {
             }
         }
         return null;
+    }
+
+    @Override
+    public List<Task> getTaskForJob(Long jobId) {
+        return taskRepository.findAll().stream()
+                .filter(task -> task.getJob().getJobId().equals(jobId)).collect(Collectors.toList());
     }
 }

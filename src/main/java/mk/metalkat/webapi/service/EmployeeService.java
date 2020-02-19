@@ -1,6 +1,7 @@
 package mk.metalkat.webapi.service;
 
 import mk.metalkat.webapi.models.Employee;
+import mk.metalkat.webapi.models.Task;
 
 import java.util.List;
 
@@ -15,6 +16,8 @@ public interface EmployeeService {
     Employee deleteEmployee(Long employeeId);
 
     List<Employee> getAllEmployees();
+
+    List<Task> getTasksForEmployee(Long employeeId);
 
 
 

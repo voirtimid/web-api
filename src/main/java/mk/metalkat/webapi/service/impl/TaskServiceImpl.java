@@ -1,14 +1,10 @@
 package mk.metalkat.webapi.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import mk.metalkat.webapi.models.Cnc;
-import mk.metalkat.webapi.models.Employee;
-import mk.metalkat.webapi.models.Machine;
-import mk.metalkat.webapi.models.Task;
-import mk.metalkat.webapi.repository.CNCRepository;
-import mk.metalkat.webapi.repository.EmployeeRepository;
-import mk.metalkat.webapi.repository.MachineRepository;
-import mk.metalkat.webapi.repository.TaskRepository;
+import mk.metalkat.webapi.exceptions.ModelNotFoundException;
+import mk.metalkat.webapi.models.*;
+import mk.metalkat.webapi.models.dto.TaskDTO;
+import mk.metalkat.webapi.repository.*;
 import mk.metalkat.webapi.service.TaskService;
 import org.springframework.stereotype.Service;
 
@@ -27,16 +23,28 @@ public class TaskServiceImpl implements TaskService {
 
     private final CNCRepository cncRepository;
 
+    private final JobRepository jobRepository;
+
     @Override
     public Task getTask(Long taskId) {
         return taskRepository.findById(taskId).orElse(null);
     }
 
     @Override
-    public Task createTask(Task task) {
+    public Task createTask(TaskDTO taskDTO) {
+
+        Task task = taskDTO.getTask();
         if (task.getTaskId() != null) {
             return null;
         }
+        Job job = jobRepository.findById(taskDTO.getJobId()).orElseThrow(() -> new ModelNotFoundException("The job does not exist"));
+        task.setJob(job);
+        Employee employee = employeeRepository.findById(taskDTO.getEmployeeId()).orElseThrow(() -> new ModelNotFoundException("The employee does not exist"));
+        task.setEmployee(employee);
+        Machine machine = machineRepository.findById(taskDTO.getMachineId()).orElseThrow(() -> new ModelNotFoundException("The machine does not exist"));
+        task.setMachine(machine);
+        Cnc cncCode = cncRepository.findById(taskDTO.getCncCodeId()).orElseThrow(() -> new ModelNotFoundException("The cncCode does not exist"));
+        task.setCncCode(cncCode);
         return taskRepository.save(task);
     }
 

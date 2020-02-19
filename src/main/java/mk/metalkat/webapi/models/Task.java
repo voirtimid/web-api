@@ -62,4 +62,6 @@ public class Task {
     private Double totalGain;
 
     private boolean isFinished;
+
+    private boolean workInProgress;
 }

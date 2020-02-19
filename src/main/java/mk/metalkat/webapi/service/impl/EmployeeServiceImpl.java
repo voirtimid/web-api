@@ -2,17 +2,22 @@ package mk.metalkat.webapi.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import mk.metalkat.webapi.models.Employee;
+import mk.metalkat.webapi.models.Task;
 import mk.metalkat.webapi.repository.EmployeeRepository;
+import mk.metalkat.webapi.repository.TaskRepository;
 import mk.metalkat.webapi.service.EmployeeService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class EmployeeServiceImpl implements EmployeeService {
 
     private final EmployeeRepository employeeRepository;
+
+    private final TaskRepository taskRepository;
 
 
     @Override
@@ -49,5 +54,13 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public List<Employee> getAllEmployees() {
         return employeeRepository.findAll();
+    }
+
+    @Override
+    public List<Task> getTasksForEmployee(Long employeeId) {
+        return taskRepository.findAll().stream()
+                .filter(task -> !task.isFinished())
+                .filter(task -> task.getEmployee().getEmployeeId().equals(employeeId))
+                .collect(Collectors.toList());
     }
 }

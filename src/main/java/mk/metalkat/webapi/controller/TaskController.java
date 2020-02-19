@@ -2,6 +2,7 @@ package mk.metalkat.webapi.controller;
 
 import lombok.RequiredArgsConstructor;
 import mk.metalkat.webapi.models.Task;
+import mk.metalkat.webapi.models.dto.TaskDTO;
 import mk.metalkat.webapi.service.TaskService;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,7 +23,7 @@ public class TaskController {
     }
 
     @PostMapping
-    public Task createTask(@RequestBody Task task) {
+    public Task createTask(@RequestBody TaskDTO task) {
         return taskService.createTask(task);
     }
 
@@ -56,22 +57,40 @@ public class TaskController {
         return taskService.setCncCode(taskId, cncId);
     }
 
-    @GetMapping(value = "/{taskId}/startWorkTime")
+    @PutMapping(value = "/{taskId}/startWorkTime")
     public Task startWorkTime(@PathVariable("taskId") Long taskId) {
         Task task = taskService.getTask(taskId);
         task.setStartWorkTime(LocalTime.now());
+        task.setWorkInProgress(true);
         return taskService.updateTask(taskId, task);
     }
 
-    @GetMapping(value = "/{taskId}/endWorkTime")
+    @PutMapping(value = "/{taskId}/endWorkTime")
     public Task endWorkTime(@PathVariable("taskId") Long taskId) {
         Task task = taskService.getTask(taskId);
         task.setEndWorkTime(LocalTime.now());
+        task.setWorkInProgress(false);
 
         long startWorkTime = task.getStartWorkTime().toNanoOfDay();
         long endWorkTime = task.getEndWorkTime().toNanoOfDay();
 
-        task.setTotalWorkTime(endWorkTime - startWorkTime);
+        task.setTotalWorkTime(task.getTotalWorkTime() + endWorkTime - startWorkTime);
+        return taskService.updateTask(taskId, task);
+    }
+
+    @PutMapping(value = "/{taskId}/complete")
+    public Task completeTask(@PathVariable("taskId") Long taskId) {
+        Task task = taskService.getTask(taskId);
+        if (task.isWorkInProgress()) {
+            task.setEndWorkTime(LocalTime.now());
+            task.setWorkInProgress(false);
+
+            long startWorkTime = task.getStartWorkTime().toNanoOfDay();
+            long endWorkTime = task.getEndWorkTime().toNanoOfDay();
+
+            task.setTotalWorkTime(task.getTotalWorkTime() + endWorkTime - startWorkTime);
+        }
+        task.setFinished(true);
         return taskService.updateTask(taskId, task);
     }
 }

@@ -18,4 +18,6 @@ public interface JobService {
     List<Job> getAllJobs();
 
     Job addTask(Long jobId, Task task);
+
+    List<Task> getTaskForJob(Long jobId);
 }
