@@ -23,7 +23,7 @@ public class CNCServiceImpl implements CNCService {
 
     @Override
     public Cnc findByFileName(String fileName) {
-        return cncRepository.findByFileNameEquals(fileName);
+        return cncRepository.findByCncFilenameEquals(fileName);
     }
 
     @Override

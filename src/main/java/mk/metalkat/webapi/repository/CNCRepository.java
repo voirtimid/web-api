@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface CNCRepository extends JpaRepository<Cnc, Long> {
 
-    Cnc findByFileNameEquals(String fileName);
+    Cnc findByCncFilenameEquals(String cncFilename);
 }

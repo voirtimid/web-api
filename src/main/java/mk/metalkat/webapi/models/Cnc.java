@@ -17,5 +17,5 @@ public class Cnc {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long cncId;
 
-    private String fileName;
+    private String cncFilename;
 }

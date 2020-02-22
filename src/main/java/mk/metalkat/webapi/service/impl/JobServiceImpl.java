@@ -1,9 +1,13 @@
 package mk.metalkat.webapi.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import mk.metalkat.webapi.exceptions.ModelNotFoundException;
 import mk.metalkat.webapi.models.Job;
+import mk.metalkat.webapi.models.Sketch;
 import mk.metalkat.webapi.models.Task;
+import mk.metalkat.webapi.models.dto.JobDTO;
 import mk.metalkat.webapi.repository.JobRepository;
+import mk.metalkat.webapi.repository.SketchRepository;
 import mk.metalkat.webapi.repository.TaskRepository;
 import mk.metalkat.webapi.service.JobService;
 import org.springframework.stereotype.Service;
@@ -20,16 +24,21 @@ public class JobServiceImpl implements JobService {
 
     private final TaskRepository taskRepository;
 
+    private final SketchRepository sketchRepository;
+
     @Override
     public Job getJob(Long jobId) {
         return jobRepository.findById(jobId).orElse(null);
     }
 
     @Override
-    public Job saveJob(Job job) {
+    public Job saveJob(JobDTO jobDTO) {
+        Job job = jobDTO.getJob();
         if (job.getJobId() != null) {
-            return null;
+            throw new ModelNotFoundException("Job already exists");
         }
+        Sketch sketch = sketchRepository.findById(jobDTO.getSketchId()).orElseThrow(() -> new ModelNotFoundException("Sketch does not exist"));
+        job.setSketch(sketch);
         return jobRepository.save(job);
     }
 
@@ -78,5 +87,15 @@ public class JobServiceImpl implements JobService {
     public List<Task> getTaskForJob(Long jobId) {
         return taskRepository.findAll().stream()
                 .filter(task -> task.getJob().getJobId().equals(jobId)).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Job> getAllFinishedJobs() {
+        return jobRepository.findAll().stream().filter(Job::isFinished).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Job> getAllWaitingJobs() {
+        return jobRepository.findAll().stream().filter(job -> !job.isFinished()).collect(Collectors.toList());
     }
 }

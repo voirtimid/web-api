@@ -22,15 +22,9 @@ public class Job {
 
     private String jobName;
 
-    private String committeeName;
-
-    private String theirClaimId;
-
-    private String theirTechnology;
-
-    private String myTechnology;
-
-    private String materials;
+    @OneToOne
+    @JoinColumn(name = "sketch_id")
+    private Sketch sketch;
 
     @OneToMany
     private List<Task> tasks = new ArrayList<>();
@@ -40,6 +34,8 @@ public class Job {
     private LocalDate endDate;
 
     private Double estimation;
+
+    private Double numberOfPieces;
 
     private boolean isFinished;
 

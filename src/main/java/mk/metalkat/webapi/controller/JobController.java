@@ -3,6 +3,7 @@ package mk.metalkat.webapi.controller;
 import lombok.RequiredArgsConstructor;
 import mk.metalkat.webapi.models.Job;
 import mk.metalkat.webapi.models.Task;
+import mk.metalkat.webapi.models.dto.JobDTO;
 import mk.metalkat.webapi.service.JobService;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,9 +22,18 @@ public class JobController {
         return jobService.getAllJobs();
     }
 
+    @GetMapping("/status/{isFinished}")
+    public List<Job> getJobsFilteredByStatus(@PathVariable("isFinished") boolean isFinished) {
+        if (isFinished) {
+            return jobService.getAllFinishedJobs();
+        } else {
+            return jobService.getAllWaitingJobs();
+        }
+    }
+
     @PostMapping
-    public Job createJob(@RequestBody Job job) {
-        return jobService.saveJob(job);
+    public Job createJob(@RequestBody JobDTO jobDTO) {
+        return jobService.saveJob(jobDTO);
     }
 
     @GetMapping(value = "/{jobId}")
@@ -50,4 +60,5 @@ public class JobController {
     public List<Task> getAllTaskForJob(@PathVariable("jobId") Long jobId) {
         return jobService.getTaskForJob(jobId);
     }
+
 }
