@@ -23,8 +23,8 @@ public class FileUploadController {
 
     private final CNCService cncService;
 
-    @PostMapping
-    public boolean singleFileUpload(@RequestParam("file") MultipartFile file) {
+    @PostMapping("/{folderName}")
+    public boolean singleFileUpload(@RequestParam("file") MultipartFile file, @PathVariable("folderName") String folderName) {
 
         if (file.isEmpty()) {
             return false;
@@ -34,7 +34,7 @@ public class FileUploadController {
 
             // Get the file and save it somewhere
             byte[] bytes = file.getBytes();
-            Path path = Paths.get(UPLOADED_FOLDER + file.getOriginalFilename());
+            Path path = Paths.get(UPLOADED_FOLDER + folderName + "/" + file.getOriginalFilename());
             Files.write(path, bytes);
 
             return true;
