@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -70,7 +71,7 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public List<Task> getAllTask() {
+    public List<Task> getAllTasks() {
         return taskRepository.findAll();
     }
 
@@ -114,5 +115,13 @@ public class TaskServiceImpl implements TaskService {
             return taskRepository.save(task);
         }
         return null;
+    }
+
+    @Override
+    public List<Task> getAllTasksForMachine(Long machineId) {
+        return taskRepository.findAll().stream()
+                .filter(task -> !task.isFinished())
+                .filter(task -> task.getMachine().getMachineId().equals(machineId))
+                .collect(Collectors.toList());
     }
 }

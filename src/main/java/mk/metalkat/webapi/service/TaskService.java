@@ -15,11 +15,13 @@ public interface TaskService {
 
     Task deleteTask(Long taskId);
 
-    List<Task> getAllTask();
+    List<Task> getAllTasks();
 
     Task setMachine(Long taskId, Long machineId);
 
     Task setEmployee(Long taskId, Long employeeId);
 
     Task setCncCode(Long taskId, Long cncId);
+
+    List<Task> getAllTasksForMachine(Long machineId);
 }

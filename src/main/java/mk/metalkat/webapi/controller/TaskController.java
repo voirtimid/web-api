@@ -19,7 +19,12 @@ public class TaskController {
 
     @GetMapping
     public List<Task> getAllTask() {
-        return taskService.getAllTask();
+        return taskService.getAllTasks();
+    }
+
+    @GetMapping("/machine/{machineId}")
+    public List<Task> getAllTasksForMachine(@PathVariable("machineId") Long machineId) {
+        return taskService.getAllTasksForMachine(machineId);
     }
 
     @PostMapping

@@ -20,8 +20,6 @@ public class Employee {
 
     private String lastName;
 
-    private String embg;
-
     @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
