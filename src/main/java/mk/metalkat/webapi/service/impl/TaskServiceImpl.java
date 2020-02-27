@@ -3,11 +3,15 @@ package mk.metalkat.webapi.service.impl;
 import lombok.RequiredArgsConstructor;
 import mk.metalkat.webapi.exceptions.ModelNotFoundException;
 import mk.metalkat.webapi.models.*;
+import mk.metalkat.webapi.models.dto.DateTimeDTO;
 import mk.metalkat.webapi.models.dto.TaskDTO;
 import mk.metalkat.webapi.repository.*;
 import mk.metalkat.webapi.service.TaskService;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.Period;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -38,6 +42,12 @@ public class TaskServiceImpl implements TaskService {
         if (task.getTaskId() != null) {
             return null;
         }
+
+        LocalDateTime startDateTime = LocalDateTime.of(taskDTO.getStartDate(), taskDTO.getStartTime());
+        LocalDateTime endDateTime = LocalDateTime.of(taskDTO.getEndDate(), taskDTO.getEndTime());
+        task.setStartDateTime(startDateTime);
+        task.setEndDateTime(endDateTime);
+
         Job job = jobRepository.findById(taskDTO.getJobId()).orElseThrow(() -> new ModelNotFoundException("The job does not exist"));
         task.setJob(job);
         Employee employee = employeeRepository.findById(taskDTO.getEmployeeId()).orElseThrow(() -> new ModelNotFoundException("The employee does not exist"));
@@ -123,5 +133,59 @@ public class TaskServiceImpl implements TaskService {
                 .filter(task -> !task.isFinished())
                 .filter(task -> task.getMachine().getMachineId().equals(machineId))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Task startTaskWorkTime(Long taskId) {
+        Task task = getTask(taskId);
+        task.setStartWorkTime(LocalTime.now());
+        task.setWorkInProgress(true);
+        return updateTask(taskId, task);
+    }
+
+    @Override
+    public Task endTaskWorkTime(Long taskId) {
+        Task task = getTask(taskId);
+        task.setEndWorkTime(LocalTime.now());
+        task.setWorkInProgress(false);
+
+        long startWorkTime = task.getStartWorkTime().toNanoOfDay();
+        long endWorkTime = task.getEndWorkTime().toNanoOfDay();
+
+        task.setTotalWorkTime(task.getTotalWorkTime() + endWorkTime - startWorkTime);
+        return updateTask(taskId, task);
+    }
+
+    @Override
+    public Task completeTask(Long taskId) {
+        Task task = getTask(taskId);
+        if (task.isWorkInProgress()) {
+            task.setEndWorkTime(LocalTime.now());
+            task.setWorkInProgress(false);
+
+            long startWorkTime = task.getStartWorkTime().toNanoOfDay();
+            long endWorkTime = task.getEndWorkTime().toNanoOfDay();
+
+            task.setTotalWorkTime(task.getTotalWorkTime() + endWorkTime - startWorkTime);
+        }
+        task.setFinished(true);
+
+        Job job = jobRepository.getOne(task.getJob().getJobId());
+        if (job.getTasks().stream().allMatch(Task::isFinished)) {
+            job.setFinished(true);
+        }
+        Job savedJob = jobRepository.saveAndFlush(job);
+        task.setJob(savedJob);
+        return updateTask(taskId, task);
+    }
+
+    @Override
+    public boolean checkIfSlotIsAvailable(DateTimeDTO dateTimeDTO) {
+        List<Task> allTasks = taskRepository.findAll();
+        if (allTasks.isEmpty()) {
+            return true;
+        }
+        LocalDateTime startDateTime = dateTimeDTO.getStartDateTime();
+        return allTasks.stream().allMatch(task -> task.getEndDateTime().isBefore(startDateTime));
     }
 }

@@ -12,6 +12,11 @@ import mk.metalkat.webapi.repository.TaskRepository;
 import mk.metalkat.webapi.service.JobService;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -37,6 +42,12 @@ public class JobServiceImpl implements JobService {
         if (job.getJobId() != null) {
             throw new ModelNotFoundException("Job already exists");
         }
+
+        LocalDateTime startDateTime = LocalDateTime.of(jobDTO.getStartDate(), jobDTO.getStartTime());
+        LocalDateTime endDateTime = LocalDateTime.of(jobDTO.getEndDate(), jobDTO.getEndTime());
+        job.setStartDateTime(startDateTime);
+        job.setEndDateTime(endDateTime);
+
         Sketch sketch = sketchRepository.findById(jobDTO.getSketchId()).orElseThrow(() -> new ModelNotFoundException("Sketch does not exist"));
         job.setSketch(sketch);
         return jobRepository.save(job);

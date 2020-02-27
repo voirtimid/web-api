@@ -1,8 +1,10 @@
 package mk.metalkat.webapi.service;
 
 import mk.metalkat.webapi.models.Task;
+import mk.metalkat.webapi.models.dto.DateTimeDTO;
 import mk.metalkat.webapi.models.dto.TaskDTO;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface TaskService {
@@ -24,4 +26,13 @@ public interface TaskService {
     Task setCncCode(Long taskId, Long cncId);
 
     List<Task> getAllTasksForMachine(Long machineId);
+
+    Task startTaskWorkTime(Long taskId);
+
+    Task endTaskWorkTime(Long taskId);
+
+    Task completeTask(Long taskId);
+
+    boolean checkIfSlotIsAvailable(DateTimeDTO dateTimeDTO);
+
 }

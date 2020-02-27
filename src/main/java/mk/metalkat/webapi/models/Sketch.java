@@ -39,4 +39,6 @@ public class Sketch {
 
     private String usedTools;
 
+    private Double pieceByMinute;
+
 }

@@ -2,10 +2,12 @@ package mk.metalkat.webapi.controller;
 
 import lombok.RequiredArgsConstructor;
 import mk.metalkat.webapi.models.Task;
+import mk.metalkat.webapi.models.dto.DateTimeDTO;
 import mk.metalkat.webapi.models.dto.TaskDTO;
 import mk.metalkat.webapi.service.TaskService;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -64,38 +66,21 @@ public class TaskController {
 
     @PutMapping(value = "/{taskId}/startWorkTime")
     public Task startWorkTime(@PathVariable("taskId") Long taskId) {
-        Task task = taskService.getTask(taskId);
-        task.setStartWorkTime(LocalTime.now());
-        task.setWorkInProgress(true);
-        return taskService.updateTask(taskId, task);
+        return taskService.startTaskWorkTime(taskId);
     }
 
     @PutMapping(value = "/{taskId}/endWorkTime")
     public Task endWorkTime(@PathVariable("taskId") Long taskId) {
-        Task task = taskService.getTask(taskId);
-        task.setEndWorkTime(LocalTime.now());
-        task.setWorkInProgress(false);
-
-        long startWorkTime = task.getStartWorkTime().toNanoOfDay();
-        long endWorkTime = task.getEndWorkTime().toNanoOfDay();
-
-        task.setTotalWorkTime(task.getTotalWorkTime() + endWorkTime - startWorkTime);
-        return taskService.updateTask(taskId, task);
+        return taskService.endTaskWorkTime(taskId);
     }
 
     @PutMapping(value = "/{taskId}/complete")
     public Task completeTask(@PathVariable("taskId") Long taskId) {
-        Task task = taskService.getTask(taskId);
-        if (task.isWorkInProgress()) {
-            task.setEndWorkTime(LocalTime.now());
-            task.setWorkInProgress(false);
+        return taskService.completeTask(taskId);
+    }
 
-            long startWorkTime = task.getStartWorkTime().toNanoOfDay();
-            long endWorkTime = task.getEndWorkTime().toNanoOfDay();
-
-            task.setTotalWorkTime(task.getTotalWorkTime() + endWorkTime - startWorkTime);
-        }
-        task.setFinished(true);
-        return taskService.updateTask(taskId, task);
+    @PostMapping(value = "/checkTimeSlots")
+    public boolean isTimeSlotAvailable(@RequestBody DateTimeDTO dateTimeDTO) {
+        return taskService.checkIfSlotIsAvailable(dateTimeDTO);
     }
 }

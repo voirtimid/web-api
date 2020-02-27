@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Data
@@ -39,9 +40,9 @@ public class Task {
     @JoinColumn(name = "cnc_code_id")
     private Cnc cncCode;
 
-    private LocalDate startDate;
+    private LocalDateTime startDateTime;
 
-    private LocalDate endDate;
+    private LocalDateTime endDateTime;
 
     private LocalTime startWorkTime;
 

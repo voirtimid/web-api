@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,9 +30,9 @@ public class Job {
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Task> tasks = new ArrayList<>();
 
-    private LocalDate startDate;
+    private LocalDateTime startDateTime;
 
-    private LocalDate endDate;
+    private LocalDateTime endDateTime;
 
     private Double estimation;
 
