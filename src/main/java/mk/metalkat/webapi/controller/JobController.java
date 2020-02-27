@@ -61,4 +61,9 @@ public class JobController {
         return jobService.getTaskForJob(jobId);
     }
 
+    @GetMapping(value = "/updateDates/{jobId}")
+    public Job updateDates(@PathVariable("jobId") Long jobId) {
+        return jobService.updateStartAndEndDate(jobId);
+    }
+
 }

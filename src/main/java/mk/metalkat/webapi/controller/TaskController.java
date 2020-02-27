@@ -7,8 +7,7 @@ import mk.metalkat.webapi.models.dto.TaskDTO;
 import mk.metalkat.webapi.service.TaskService;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -27,6 +26,11 @@ public class TaskController {
     @GetMapping("/machine/{machineId}")
     public List<Task> getAllTasksForMachine(@PathVariable("machineId") Long machineId) {
         return taskService.getAllTasksForMachine(machineId);
+    }
+
+    @GetMapping("/employee/{employeeId}")
+    public List<Task> getAllTasksForEmployee(@PathVariable("employeeId") Long employeeId) {
+        return taskService.getAllTasksForEmployee(employeeId);
     }
 
     @PostMapping
@@ -82,5 +86,10 @@ public class TaskController {
     @PostMapping(value = "/checkTimeSlots")
     public boolean isTimeSlotAvailable(@RequestBody DateTimeDTO dateTimeDTO) {
         return taskService.checkIfSlotIsAvailable(dateTimeDTO);
+    }
+
+    @GetMapping(value = "/findSlot/{machineId}")
+    public LocalDate findFirstAvailableSlot(@PathVariable("machineId") Long machineId) {
+        return taskService.findFirstAvailableSlot(machineId);
     }
 }

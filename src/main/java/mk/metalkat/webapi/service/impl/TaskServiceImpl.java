@@ -9,9 +9,12 @@ import mk.metalkat.webapi.repository.*;
 import mk.metalkat.webapi.service.TaskService;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.Period;
+import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -42,11 +45,6 @@ public class TaskServiceImpl implements TaskService {
         if (task.getTaskId() != null) {
             return null;
         }
-
-        LocalDateTime startDateTime = LocalDateTime.of(taskDTO.getStartDate(), taskDTO.getStartTime());
-        LocalDateTime endDateTime = LocalDateTime.of(taskDTO.getEndDate(), taskDTO.getEndTime());
-        task.setStartDateTime(startDateTime);
-        task.setEndDateTime(endDateTime);
 
         Job job = jobRepository.findById(taskDTO.getJobId()).orElseThrow(() -> new ModelNotFoundException("The job does not exist"));
         task.setJob(job);
@@ -185,7 +183,26 @@ public class TaskServiceImpl implements TaskService {
         if (allTasks.isEmpty()) {
             return true;
         }
-        LocalDateTime startDateTime = dateTimeDTO.getStartDateTime();
-        return allTasks.stream().allMatch(task -> task.getEndDateTime().isBefore(startDateTime));
+        LocalDate startDate = dateTimeDTO.getStartDate();
+        return allTasks.stream().allMatch(task -> task.getEndDate().isBefore(startDate));
+    }
+
+    @Override
+    public LocalDate findFirstAvailableSlot(Long machineId) {
+        List<Task> allTasksForMachine = getAllTasksForMachine(machineId);
+        if (allTasksForMachine.isEmpty()) {
+            return LocalDate.now();
+        }
+        return allTasksForMachine.stream()
+                .map(Task::getEndDate)
+                .max(Comparator.naturalOrder()).orElse(LocalDate.now().plusDays(1));
+    }
+
+    @Override
+    public List<Task> getAllTasksForEmployee(Long employeeId) {
+        return taskRepository.findAll().stream()
+                .filter(task -> !task.isFinished())
+                .filter(task -> task.getEmployee().getEmployeeId().equals(employeeId))
+                .collect(Collectors.toList());
     }
 }

@@ -4,6 +4,7 @@ import mk.metalkat.webapi.models.Task;
 import mk.metalkat.webapi.models.dto.DateTimeDTO;
 import mk.metalkat.webapi.models.dto.TaskDTO;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -34,5 +35,9 @@ public interface TaskService {
     Task completeTask(Long taskId);
 
     boolean checkIfSlotIsAvailable(DateTimeDTO dateTimeDTO);
+
+    LocalDate findFirstAvailableSlot(Long machineId);
+
+    List<Task> getAllTasksForEmployee(Long employeeId);
 
 }

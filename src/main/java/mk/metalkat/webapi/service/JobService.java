@@ -25,4 +25,6 @@ public interface JobService {
     List<Job> getAllFinishedJobs();
 
     List<Job> getAllWaitingJobs();
+
+    Job updateStartAndEndDate(Long jobId);
 }

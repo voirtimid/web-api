@@ -2,24 +2,25 @@ package mk.metalkat.webapi.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import mk.metalkat.webapi.exceptions.ModelNotFoundException;
+import mk.metalkat.webapi.models.Employee;
 import mk.metalkat.webapi.models.Job;
 import mk.metalkat.webapi.models.Sketch;
 import mk.metalkat.webapi.models.Task;
 import mk.metalkat.webapi.models.dto.JobDTO;
+import mk.metalkat.webapi.repository.EmployeeRepository;
 import mk.metalkat.webapi.repository.JobRepository;
 import mk.metalkat.webapi.repository.SketchRepository;
 import mk.metalkat.webapi.repository.TaskRepository;
 import mk.metalkat.webapi.service.JobService;
 import org.springframework.stereotype.Service;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.util.Date;
+import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -42,11 +43,6 @@ public class JobServiceImpl implements JobService {
         if (job.getJobId() != null) {
             throw new ModelNotFoundException("Job already exists");
         }
-
-        LocalDateTime startDateTime = LocalDateTime.of(jobDTO.getStartDate(), jobDTO.getStartTime());
-        LocalDateTime endDateTime = LocalDateTime.of(jobDTO.getEndDate(), jobDTO.getEndTime());
-        job.setStartDateTime(startDateTime);
-        job.setEndDateTime(endDateTime);
 
         Sketch sketch = sketchRepository.findById(jobDTO.getSketchId()).orElseThrow(() -> new ModelNotFoundException("Sketch does not exist"));
         job.setSketch(sketch);
@@ -108,5 +104,26 @@ public class JobServiceImpl implements JobService {
     @Override
     public List<Job> getAllWaitingJobs() {
         return jobRepository.findAll().stream().filter(job -> !job.isFinished()).collect(Collectors.toList());
+    }
+
+    @Override
+    public Job updateStartAndEndDate(Long jobId) {
+        Job job = jobRepository.findById(jobId).get();
+        List<Task> tasks = job.getTasks();
+        if (tasks.isEmpty()) {
+            return job;
+        }
+
+        LocalDate startDate = tasks.stream()
+                .map(Task::getStartDate)
+                .min(Comparator.naturalOrder()).orElse(LocalDate.now());
+
+        LocalDate endDate = tasks.stream()
+                .map(Task::getEndDate)
+                .max(Comparator.naturalOrder()).orElse(LocalDate.now());
+
+        job.setStartDate(startDate);
+        job.setEndDate(endDate);
+        return jobRepository.save(job);
     }
 }
