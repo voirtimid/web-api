@@ -1,8 +1,8 @@
 package mk.metalkat.webapi.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import mk.metalkat.webapi.models.Employee;
-import mk.metalkat.webapi.models.Task;
+import mk.metalkat.webapi.models.jpa.Employee;
+import mk.metalkat.webapi.models.jpa.Task;
 import mk.metalkat.webapi.repository.EmployeeRepository;
 import mk.metalkat.webapi.repository.TaskRepository;
 import mk.metalkat.webapi.service.EmployeeService;

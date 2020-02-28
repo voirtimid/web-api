@@ -2,7 +2,7 @@ package mk.metalkat.webapi.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import mk.metalkat.webapi.exceptions.ModelNotFoundException;
-import mk.metalkat.webapi.models.Sketch;
+import mk.metalkat.webapi.models.jpa.Sketch;
 import mk.metalkat.webapi.repository.SketchRepository;
 import mk.metalkat.webapi.service.SketchService;
 import org.springframework.stereotype.Service;

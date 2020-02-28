@@ -1,6 +1,6 @@
 package mk.metalkat.webapi.service;
 
-import mk.metalkat.webapi.models.Sketch;
+import mk.metalkat.webapi.models.jpa.Sketch;
 
 import java.util.List;
 

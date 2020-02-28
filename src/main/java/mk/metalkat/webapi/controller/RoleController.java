@@ -1,7 +1,7 @@
 package mk.metalkat.webapi.controller;
 
 import lombok.RequiredArgsConstructor;
-import mk.metalkat.webapi.models.Role;
+import mk.metalkat.webapi.models.jpa.Role;
 import mk.metalkat.webapi.service.RoleService;
 import org.springframework.web.bind.annotation.*;
 

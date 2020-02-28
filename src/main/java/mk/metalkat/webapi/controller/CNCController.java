@@ -1,7 +1,7 @@
 package mk.metalkat.webapi.controller;
 
 import lombok.RequiredArgsConstructor;
-import mk.metalkat.webapi.models.Cnc;
+import mk.metalkat.webapi.models.jpa.Cnc;
 import mk.metalkat.webapi.service.CNCService;
 import org.springframework.web.bind.annotation.*;
 

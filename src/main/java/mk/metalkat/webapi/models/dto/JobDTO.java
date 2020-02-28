@@ -1,7 +1,7 @@
 package mk.metalkat.webapi.models.dto;
 
 import lombok.Data;
-import mk.metalkat.webapi.models.Job;
+import mk.metalkat.webapi.models.jpa.Job;
 
 @Data
 public class JobDTO {

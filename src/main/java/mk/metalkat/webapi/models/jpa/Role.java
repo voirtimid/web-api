@@ -1,4 +1,4 @@
-package mk.metalkat.webapi.models;
+package mk.metalkat.webapi.models.jpa;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,21 +7,15 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "users")
+@Table(name = "roles")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class User {
+public class Role {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long userId;
+    private Long roleId;
 
-    private String email;
-
-    private String password;
-
-    @OneToOne
-    @JoinColumn(name = "role_id")
-    private Role role;
+    private String roleName;
 }

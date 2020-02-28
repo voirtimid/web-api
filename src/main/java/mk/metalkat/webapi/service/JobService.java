@@ -1,7 +1,7 @@
 package mk.metalkat.webapi.service;
 
-import mk.metalkat.webapi.models.Job;
-import mk.metalkat.webapi.models.Task;
+import mk.metalkat.webapi.models.jpa.Job;
+import mk.metalkat.webapi.models.jpa.Task;
 import mk.metalkat.webapi.models.dto.JobDTO;
 
 import java.util.List;

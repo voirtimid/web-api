@@ -1,7 +1,7 @@
 package mk.metalkat.webapi.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import mk.metalkat.webapi.models.Machine;
+import mk.metalkat.webapi.models.jpa.Machine;
 import mk.metalkat.webapi.repository.MachineRepository;
 import mk.metalkat.webapi.service.MachineService;
 import org.springframework.stereotype.Service;

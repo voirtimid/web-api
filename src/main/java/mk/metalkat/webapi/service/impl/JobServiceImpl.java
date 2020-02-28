@@ -2,12 +2,10 @@ package mk.metalkat.webapi.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import mk.metalkat.webapi.exceptions.ModelNotFoundException;
-import mk.metalkat.webapi.models.Employee;
-import mk.metalkat.webapi.models.Job;
-import mk.metalkat.webapi.models.Sketch;
-import mk.metalkat.webapi.models.Task;
+import mk.metalkat.webapi.models.jpa.Job;
+import mk.metalkat.webapi.models.jpa.Sketch;
+import mk.metalkat.webapi.models.jpa.Task;
 import mk.metalkat.webapi.models.dto.JobDTO;
-import mk.metalkat.webapi.repository.EmployeeRepository;
 import mk.metalkat.webapi.repository.JobRepository;
 import mk.metalkat.webapi.repository.SketchRepository;
 import mk.metalkat.webapi.repository.TaskRepository;
@@ -15,12 +13,10 @@ import mk.metalkat.webapi.service.JobService;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor

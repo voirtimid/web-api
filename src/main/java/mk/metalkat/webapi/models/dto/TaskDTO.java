@@ -1,7 +1,7 @@
 package mk.metalkat.webapi.models.dto;
 
 import lombok.Data;
-import mk.metalkat.webapi.models.Task;
+import mk.metalkat.webapi.models.jpa.Task;
 
 @Data
 public class TaskDTO {

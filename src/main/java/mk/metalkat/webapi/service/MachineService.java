@@ -1,8 +1,7 @@
 package mk.metalkat.webapi.service;
 
-import mk.metalkat.webapi.models.Machine;
+import mk.metalkat.webapi.models.jpa.Machine;
 
-import javax.crypto.Mac;
 import java.util.List;
 
 public interface MachineService {

@@ -1,4 +1,4 @@
-package mk.metalkat.webapi.models;
+package mk.metalkat.webapi.models.jpa;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;

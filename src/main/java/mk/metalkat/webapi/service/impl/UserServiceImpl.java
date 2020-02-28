@@ -2,7 +2,7 @@ package mk.metalkat.webapi.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import mk.metalkat.webapi.exceptions.ModelNotFoundException;
-import mk.metalkat.webapi.models.User;
+import mk.metalkat.webapi.models.jpa.User;
 import mk.metalkat.webapi.models.dto.UserDTO;
 import mk.metalkat.webapi.repository.UserRepository;
 import mk.metalkat.webapi.service.UserService;

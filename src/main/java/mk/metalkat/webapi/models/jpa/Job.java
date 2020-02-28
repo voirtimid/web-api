@@ -1,4 +1,4 @@
-package mk.metalkat.webapi.models;
+package mk.metalkat.webapi.models.jpa;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

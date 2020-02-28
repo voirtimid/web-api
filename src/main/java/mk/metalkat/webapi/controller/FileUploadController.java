@@ -1,7 +1,7 @@
 package mk.metalkat.webapi.controller;
 
 import lombok.RequiredArgsConstructor;
-import mk.metalkat.webapi.models.Cnc;
+import mk.metalkat.webapi.models.jpa.Cnc;
 import mk.metalkat.webapi.service.CNCService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
@@ -28,10 +28,10 @@ public class FileUploadController {
     private final CNCService cncService;
 
     @PostMapping("/{folderName}")
-    public String singleFileUpload(@RequestParam("file") MultipartFile file, @PathVariable("folderName") String folderName) {
+    public boolean singleFileUpload(@RequestParam("file") MultipartFile file, @PathVariable("folderName") String folderName) {
 
         if (file.isEmpty()) {
-            return "false";
+            return false;
         }
 
         try {
@@ -43,20 +43,20 @@ public class FileUploadController {
             if (Files.notExists(Paths.get(filepath))) {
                 boolean mkdirs = f.mkdirs();
                 if (!mkdirs) {
-                    return "false";
+                    return false;
                 }
             }
 
             Path path = Paths.get(filepath + file.getOriginalFilename());
             Files.write(path, bytes);
 
-            return new String(bytes);
+            return true;
 
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        return "false";
+        return false;
     }
 
     @GetMapping("/{cncId}")

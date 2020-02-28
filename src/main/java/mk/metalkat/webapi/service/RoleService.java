@@ -1,6 +1,6 @@
 package mk.metalkat.webapi.service;
 
-import mk.metalkat.webapi.models.Role;
+import mk.metalkat.webapi.models.jpa.Role;
 
 import java.util.List;
 

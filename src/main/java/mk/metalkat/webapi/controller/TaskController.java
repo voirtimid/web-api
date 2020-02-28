@@ -1,7 +1,7 @@
 package mk.metalkat.webapi.controller;
 
 import lombok.RequiredArgsConstructor;
-import mk.metalkat.webapi.models.Task;
+import mk.metalkat.webapi.models.jpa.Task;
 import mk.metalkat.webapi.models.dto.DateTimeDTO;
 import mk.metalkat.webapi.models.dto.TaskDTO;
 import mk.metalkat.webapi.service.TaskService;

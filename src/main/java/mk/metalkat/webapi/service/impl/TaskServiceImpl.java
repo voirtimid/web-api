@@ -2,18 +2,15 @@ package mk.metalkat.webapi.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import mk.metalkat.webapi.exceptions.ModelNotFoundException;
-import mk.metalkat.webapi.models.*;
 import mk.metalkat.webapi.models.dto.DateTimeDTO;
 import mk.metalkat.webapi.models.dto.TaskDTO;
+import mk.metalkat.webapi.models.jpa.*;
 import mk.metalkat.webapi.repository.*;
 import mk.metalkat.webapi.service.TaskService;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.Period;
-import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;

@@ -1,6 +1,6 @@
 package mk.metalkat.webapi.service;
 
-import mk.metalkat.webapi.models.Cnc;
+import mk.metalkat.webapi.models.jpa.Cnc;
 
 import java.util.List;
 

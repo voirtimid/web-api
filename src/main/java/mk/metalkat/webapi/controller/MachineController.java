@@ -1,10 +1,8 @@
 package mk.metalkat.webapi.controller;
 
 import lombok.RequiredArgsConstructor;
-import mk.metalkat.webapi.models.Machine;
+import mk.metalkat.webapi.models.jpa.Machine;
 import mk.metalkat.webapi.service.MachineService;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

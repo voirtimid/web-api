@@ -1,8 +1,8 @@
 package mk.metalkat.webapi.controller;
 
 import lombok.RequiredArgsConstructor;
-import mk.metalkat.webapi.models.Job;
-import mk.metalkat.webapi.models.Task;
+import mk.metalkat.webapi.models.jpa.Job;
+import mk.metalkat.webapi.models.jpa.Task;
 import mk.metalkat.webapi.models.dto.JobDTO;
 import mk.metalkat.webapi.service.JobService;
 import org.springframework.web.bind.annotation.*;

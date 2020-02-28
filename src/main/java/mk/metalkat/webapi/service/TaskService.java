@@ -1,11 +1,10 @@
 package mk.metalkat.webapi.service;
 
-import mk.metalkat.webapi.models.Task;
+import mk.metalkat.webapi.models.jpa.Task;
 import mk.metalkat.webapi.models.dto.DateTimeDTO;
 import mk.metalkat.webapi.models.dto.TaskDTO;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 public interface TaskService {

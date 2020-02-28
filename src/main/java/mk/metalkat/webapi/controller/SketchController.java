@@ -1,7 +1,7 @@
 package mk.metalkat.webapi.controller;
 
 import lombok.RequiredArgsConstructor;
-import mk.metalkat.webapi.models.Sketch;
+import mk.metalkat.webapi.models.jpa.Sketch;
 import mk.metalkat.webapi.service.SketchService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
