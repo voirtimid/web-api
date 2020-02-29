@@ -122,4 +122,12 @@ public class JobServiceImpl implements JobService {
         job.setEndDate(endDate);
         return jobRepository.save(job);
     }
+
+    @Override
+    public List<Job> getJobsWithSketch(String sketchName) {
+        return jobRepository.findAll().stream()
+                .filter(job -> job.getSketch().getSketchName().equals(sketchName))
+                .limit(5)
+                .collect(Collectors.toList());
+    }
 }

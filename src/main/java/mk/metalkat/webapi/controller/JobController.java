@@ -66,4 +66,9 @@ public class JobController {
         return jobService.updateStartAndEndDate(jobId);
     }
 
+    @GetMapping(value = "/getJobsFor/{sketchName}")
+    public List<Job> getJobsWithSketch(@PathVariable("sketchName") String sketchName) {
+        return jobService.getJobsWithSketch(sketchName);
+    }
+
 }

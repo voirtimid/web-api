@@ -27,4 +27,6 @@ public interface JobService {
     List<Job> getAllWaitingJobs();
 
     Job updateStartAndEndDate(Long jobId);
+
+    List<Job> getJobsWithSketch(String sketchName);
 }
