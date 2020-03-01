@@ -10,6 +10,8 @@ import mk.metalkat.webapi.repository.JobRepository;
 import mk.metalkat.webapi.repository.SketchRepository;
 import mk.metalkat.webapi.repository.TaskRepository;
 import mk.metalkat.webapi.service.JobService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -42,6 +44,7 @@ public class JobServiceImpl implements JobService {
 
         Sketch sketch = sketchRepository.findById(jobDTO.getSketchId()).orElseThrow(() -> new ModelNotFoundException("Sketch does not exist"));
         job.setSketch(sketch);
+        job.setJobCreated(LocalDate.now());
         return jobRepository.save(job);
     }
 
@@ -66,6 +69,11 @@ public class JobServiceImpl implements JobService {
     @Override
     public List<Job> getAllJobs() {
         return jobRepository.findAll();
+    }
+
+    @Override
+    public Page<Job> getAllJobsPaged(int page, int size) {
+        return jobRepository.findAll(PageRequest.of(page, size));
     }
 
     @Override
@@ -111,23 +119,36 @@ public class JobServiceImpl implements JobService {
         }
 
         LocalDate startDate = tasks.stream()
-                .map(Task::getStartDate)
+                .map(Task::getPlannedStartDate)
                 .min(Comparator.naturalOrder()).orElse(LocalDate.now());
 
         LocalDate endDate = tasks.stream()
-                .map(Task::getEndDate)
+                .map(Task::getPlannedEndDate)
                 .max(Comparator.naturalOrder()).orElse(LocalDate.now());
 
-        job.setStartDate(startDate);
-        job.setEndDate(endDate);
+        job.setPlannedStartDate(startDate);
+        job.setPlannedEndDate(endDate);
         return jobRepository.save(job);
     }
 
     @Override
-    public List<Job> getJobsWithSketch(String sketchName) {
+    public List<Job> getJobsWithSketch(String drawing) {
         return jobRepository.findAll().stream()
-                .filter(job -> job.getSketch().getSketchName().equals(sketchName))
+                .filter(Job::isFinished)
+                .filter(job -> job.getSketch().getDrawing().equals(drawing))
                 .limit(5)
+                .sorted(Comparator.comparing(Job::getJobCreated).reversed())
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Job completeJob(Long jobId) {
+        Job job = jobRepository.findById(jobId).get();
+        if (job.getTasks().stream().allMatch(Task::isFinished)) {
+            job.setJobFinished(LocalDate.now());
+            job.setFinished(true);
+            return jobRepository.saveAndFlush(job);
+        }
+        return job;
     }
 }

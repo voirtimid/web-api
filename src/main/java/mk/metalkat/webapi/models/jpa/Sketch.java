@@ -21,6 +21,9 @@ public class Sketch {
     @NotNull
     private String sketchName;
 
+    @NotNull
+    private String drawing;
+
     private String companyName;
 
     private String companyInfo;
@@ -34,8 +37,6 @@ public class Sketch {
     private String measuringListFilename;
 
     private String myMeasuringListFilename;
-
-    private String gcodeFilename;
 
     private String usedTools;
 

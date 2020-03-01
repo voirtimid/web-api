@@ -29,15 +29,27 @@ public class Job {
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Task> tasks = new ArrayList<>();
 
-    private LocalDate startDate;
+    private LocalDate jobCreated;
 
-    private LocalDate endDate;
+    private LocalDate jobFinished;
 
-    private Double estimatedHours;
+    private LocalDate plannedStartDate;
 
-    private Double actualDays;
+    private LocalDate plannedEndDate;
 
-    private Double numberOfPieces;
+    private LocalDate realStartDate;
+
+    private LocalDate realEndDate;
+
+    private Double plannedHours = 0D;
+
+    private Double realHours = 0D;
+
+    private Double plannedTimeForPiece = 0D;
+
+    private Double realTimeForPiece = 0D;
+
+    private Long numberOfPieces;
 
     private boolean isFinished;
 

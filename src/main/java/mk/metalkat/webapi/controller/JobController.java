@@ -5,6 +5,8 @@ import mk.metalkat.webapi.models.jpa.Job;
 import mk.metalkat.webapi.models.jpa.Task;
 import mk.metalkat.webapi.models.dto.JobDTO;
 import mk.metalkat.webapi.service.JobService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,6 +22,12 @@ public class JobController {
     @GetMapping
     public List<Job> getAllJobs() {
         return jobService.getAllJobs();
+    }
+
+    @GetMapping("/paged")
+    public Page<Job> getAllJobsPaged(@RequestHeader(name = "page", defaultValue = "0", required = false) int page,
+                                     @RequestHeader(name = "size", defaultValue = "10", required = false) int size) {
+        return jobService.getAllJobsPaged(page, size);
     }
 
     @GetMapping("/status/{isFinished}")
@@ -66,9 +74,14 @@ public class JobController {
         return jobService.updateStartAndEndDate(jobId);
     }
 
-    @GetMapping(value = "/getJobsFor/{sketchName}")
-    public List<Job> getJobsWithSketch(@PathVariable("sketchName") String sketchName) {
-        return jobService.getJobsWithSketch(sketchName);
+    @GetMapping(value = "/getJobsFor/{drawing}")
+    public List<Job> getJobsWithSketch(@PathVariable("drawing") String drawing) {
+        return jobService.getJobsWithSketch(drawing);
+    }
+
+    @GetMapping(value = "/{jobId}/complete")
+    public Job completeJob(@PathVariable("jobId") Long jobId) {
+        return jobService.completeJob(jobId);
     }
 
 }

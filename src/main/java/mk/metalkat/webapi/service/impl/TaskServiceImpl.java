@@ -42,15 +42,23 @@ public class TaskServiceImpl implements TaskService {
         if (task.getTaskId() != null) {
             return null;
         }
-
         Job job = jobRepository.findById(taskDTO.getJobId()).orElseThrow(() -> new ModelNotFoundException("The job does not exist"));
-        task.setJob(job);
+        job.setPlannedStartDate(task.getPlannedStartDate());
+        job.setPlannedEndDate(task.getPlannedEndDate());
+        job.setPlannedTimeForPiece(job.getPlannedTimeForPiece() + taskDTO.getPlannedMinutesForPiece());
+        job.setPlannedHours(job.getPlannedHours() + task.getPlannedHours());
+        Job updatedJob = jobRepository.saveAndFlush(job);
+        task.setJob(updatedJob);
         Employee employee = employeeRepository.findById(taskDTO.getEmployeeId()).orElseThrow(() -> new ModelNotFoundException("The employee does not exist"));
         task.setEmployee(employee);
         Machine machine = machineRepository.findById(taskDTO.getMachineId()).orElseThrow(() -> new ModelNotFoundException("The machine does not exist"));
         task.setMachine(machine);
         Cnc cncCode = cncRepository.findById(taskDTO.getCncCodeId()).orElseThrow(() -> new ModelNotFoundException("The cncCode does not exist"));
         task.setCncCode(cncCode);
+
+        int size = updatedJob.getTasks().size();
+        task.setTaskName(updatedJob.getJobName() + " Task " + (size + 1));
+
         return taskRepository.save(task);
     }
 
@@ -164,13 +172,6 @@ public class TaskServiceImpl implements TaskService {
             task.setTotalWorkTime(task.getTotalWorkTime() + endWorkTime - startWorkTime);
         }
         task.setFinished(true);
-
-        Job job = jobRepository.getOne(task.getJob().getJobId());
-        if (job.getTasks().stream().allMatch(Task::isFinished)) {
-            job.setFinished(true);
-        }
-        Job savedJob = jobRepository.saveAndFlush(job);
-        task.setJob(savedJob);
         return updateTask(taskId, task);
     }
 
@@ -181,7 +182,7 @@ public class TaskServiceImpl implements TaskService {
             return true;
         }
         LocalDate startDate = dateTimeDTO.getStartDate();
-        return allTasks.stream().allMatch(task -> task.getEndDate().isBefore(startDate));
+        return allTasks.stream().allMatch(task -> task.getPlannedEndDate().isBefore(startDate));
     }
 
     @Override
@@ -191,8 +192,8 @@ public class TaskServiceImpl implements TaskService {
             return LocalDate.now();
         }
         return allTasksForMachine.stream()
-                .map(Task::getEndDate)
-                .max(Comparator.naturalOrder()).orElse(LocalDate.now().plusDays(1));
+                .map(Task::getPlannedEndDate)
+                .max(Comparator.naturalOrder()).get().plusDays(1);
     }
 
     @Override

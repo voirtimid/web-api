@@ -22,9 +22,9 @@ public class SketchController {
         return ResponseEntity.ok(sketchById);
     }
 
-    @GetMapping("/name/{sketchName}")
-    public ResponseEntity<Sketch> getSketchByName(@PathVariable("sketchName") String sketchName) {
-        Sketch sketchByName = sketchService.getSketchByName(sketchName);
+    @GetMapping("/name/{drawing}")
+    public ResponseEntity<Sketch> getSketchByName(@PathVariable("drawing") String drawing) {
+        Sketch sketchByName = sketchService.getSketchByName(drawing);
         return ResponseEntity.ok(sketchByName);
     }
 

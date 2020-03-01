@@ -4,28 +4,56 @@ import lombok.RequiredArgsConstructor;
 import mk.metalkat.webapi.models.jpa.Cnc;
 import mk.metalkat.webapi.service.CNCService;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
 @CrossOrigin("http://localhost:3000")
-@RestController()
+@RestController
 @RequestMapping("/upload")
 @RequiredArgsConstructor
-public class FileUploadController {
+public class FileController {
 
     //Save the uploaded file to this folder
     @Value("${uploads.folder}")
     private String UPLOADED_FOLDER;
 
     private final CNCService cncService;
+
+    @GetMapping("/downloadFile/{folderName}/{fileName}")
+    public ResponseEntity<Resource> downloadFile(@PathVariable String fileName, HttpServletRequest request, @PathVariable("folderName") String folderName) throws IOException {
+
+        Path filePath = Paths.get(UPLOADED_FOLDER + folderName + "/" + fileName).toAbsolutePath().normalize();
+        Resource resource = new UrlResource(filePath.toUri());
+
+        // Try to determine file's content type
+        String contentType = null;
+        contentType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
+
+        // Fallback to the default content type if type could not be determined
+        if (contentType == null) {
+            contentType = "application/octet-stream";
+        }
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(contentType))
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
+                .body(resource);
+    }
 
     @PostMapping("/{folderName}")
     public boolean singleFileUpload(@RequestParam("file") MultipartFile file, @PathVariable("folderName") String folderName) {

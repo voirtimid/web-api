@@ -16,4 +16,6 @@ public class TaskDTO {
 
     private Long cncCodeId;
 
+    private Double plannedMinutesForPiece;
+
 }

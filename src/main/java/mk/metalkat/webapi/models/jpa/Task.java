@@ -39,25 +39,25 @@ public class Task {
     @JoinColumn(name = "cnc_code_id")
     private Cnc cncCode;
 
-    private LocalDate startDate;
+    private String comment;
 
-    private LocalDate endDate;
+    private LocalDate plannedStartDate;
+
+    private LocalDate plannedEndDate;
+
+    private LocalDate realStartDate;
+
+    private LocalDate realEndDate;
 
     private LocalTime startWorkTime;
 
     private LocalTime endWorkTime;
 
-    private Long totalWorkTime;
+    private Double plannedHours;
 
-    private String measuringList;
+    private Double totalWorkTime;
 
-    private String usedTools;
-
-    private Double pieceByMinute;
-
-    private Double priceByPiece;
-
-    private Double totalGain;
+    private Integer minutesForPiece;
 
     private boolean isFinished;
 

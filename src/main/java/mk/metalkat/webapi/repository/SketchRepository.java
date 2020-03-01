@@ -5,6 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface SketchRepository extends JpaRepository<Sketch, Long> {
 
-    Sketch findBySketchNameContaining(String sketchName);
+    Sketch findByDrawingContaining(String drawing);
 
 }

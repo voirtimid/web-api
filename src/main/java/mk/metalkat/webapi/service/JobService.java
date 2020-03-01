@@ -1,8 +1,9 @@
 package mk.metalkat.webapi.service;
 
+import mk.metalkat.webapi.models.dto.JobDTO;
 import mk.metalkat.webapi.models.jpa.Job;
 import mk.metalkat.webapi.models.jpa.Task;
-import mk.metalkat.webapi.models.dto.JobDTO;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -18,6 +19,8 @@ public interface JobService {
 
     List<Job> getAllJobs();
 
+    Page<Job> getAllJobsPaged(int page, int size);
+
     Job addTask(Long jobId, Task task);
 
     List<Task> getTaskForJob(Long jobId);
@@ -28,5 +31,7 @@ public interface JobService {
 
     Job updateStartAndEndDate(Long jobId);
 
-    List<Job> getJobsWithSketch(String sketchName);
+    List<Job> getJobsWithSketch(String drawing);
+
+    Job completeJob(Long jobId);
 }
