@@ -132,6 +132,29 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
+    public Job updateActualDates(Long jobId) {
+        Job job = jobRepository.findById(jobId).get();
+        List<Task> tasks = job.getTasks();
+        if (tasks.isEmpty()) {
+            return job;
+        }
+
+        LocalDate startDate = tasks.stream()
+                .filter(task -> task.getRealEndDate() != null)
+                .map(Task::getRealStartDate)
+                .min(Comparator.naturalOrder()).orElse(null);
+
+        LocalDate endDate = tasks.stream()
+                .filter(task -> task.getRealEndDate() != null)
+                .map(Task::getRealEndDate)
+                .max(Comparator.naturalOrder()).orElse(null);
+
+        job.setRealStartDate(startDate);
+        job.setRealEndDate(endDate);
+        return jobRepository.saveAndFlush(job);
+    }
+
+    @Override
     public List<Job> getJobsWithSketch(String drawing) {
         return jobRepository.findAll().stream()
                 .filter(Job::isFinished)

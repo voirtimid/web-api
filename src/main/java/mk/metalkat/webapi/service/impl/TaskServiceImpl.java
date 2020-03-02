@@ -42,11 +42,17 @@ public class TaskServiceImpl implements TaskService {
         if (task.getTaskId() != null) {
             return null;
         }
+
         Job job = jobRepository.findById(taskDTO.getJobId()).orElseThrow(() -> new ModelNotFoundException("The job does not exist"));
         job.setPlannedStartDate(task.getPlannedStartDate());
         job.setPlannedEndDate(task.getPlannedEndDate());
-        job.setPlannedTimeForPiece(job.getPlannedTimeForPiece() + taskDTO.getPlannedMinutesForPiece());
-        job.setPlannedHours(job.getPlannedHours() + task.getPlannedHours());
+
+        Double jobTotalMinutesForPiece = job.getTasks().stream().filter(task1 -> !task1.getTaskId().equals(task.getTaskId())).map(Task::getMinutesForPiece).reduce((Double::sum)).orElse(0d);
+        Double jobTotalWorkTime = job.getTasks().stream().filter(task1 -> !task1.getTaskId().equals(task.getTaskId())).map(Task::getPlannedHours).reduce(Double::sum).orElse(0d);
+
+        job.setPlannedTimeForPiece(jobTotalMinutesForPiece + taskDTO.getPlannedMinutesForPiece());
+        job.setPlannedHours(jobTotalWorkTime + task.getPlannedHours());
+
         Job updatedJob = jobRepository.saveAndFlush(job);
         task.setJob(updatedJob);
         Employee employee = employeeRepository.findById(taskDTO.getEmployeeId()).orElseThrow(() -> new ModelNotFoundException("The employee does not exist"));
@@ -60,6 +66,25 @@ public class TaskServiceImpl implements TaskService {
         task.setTaskName(updatedJob.getJobName() + " Task " + (size + 1));
 
         return taskRepository.save(task);
+    }
+
+    @Override
+    public Task updateTask_v2(TaskDTO taskDTO) {
+        Task task = taskDTO.getTask();
+        Job job = jobRepository.findById(taskDTO.getJobId()).orElseThrow(() -> new ModelNotFoundException("The job does not exist"));
+
+        Double totalWorkTime = task.getTotalWorkTime();
+        Double realMinutesForPiece = task.getRealMinutesForPiece();
+
+        Double jobTotalMinutesForPiece = job.getTasks().stream().filter(task1 -> !task1.getTaskId().equals(task.getTaskId())).map(Task::getRealMinutesForPiece).reduce((Double::sum)).orElse(0d);
+        Double jobTotalWorkTime = job.getTasks().stream().filter(task1 -> !task1.getTaskId().equals(task.getTaskId())).map(Task::getTotalWorkTime).reduce((Double::sum)).orElse(0d);
+
+        job.setRealHours(jobTotalWorkTime + totalWorkTime);
+        job.setRealTimeForPiece(jobTotalMinutesForPiece + realMinutesForPiece);
+
+        Job updatedJob = jobRepository.saveAndFlush(job);
+        task.setJob(updatedJob);
+        return taskRepository.saveAndFlush(task);
     }
 
     @Override

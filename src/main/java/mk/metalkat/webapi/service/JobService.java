@@ -31,6 +31,8 @@ public interface JobService {
 
     Job updateStartAndEndDate(Long jobId);
 
+    Job updateActualDates(Long jobId);
+
     List<Job> getJobsWithSketch(String drawing);
 
     Job completeJob(Long jobId);

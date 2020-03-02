@@ -74,6 +74,11 @@ public class JobController {
         return jobService.updateStartAndEndDate(jobId);
     }
 
+    @GetMapping(value = "/updateRealDates/{jobId}")
+    public Job updateRealDates(@PathVariable("jobId") Long jobId) {
+        return jobService.updateActualDates(jobId);
+    }
+
     @GetMapping(value = "/getJobsFor/{drawing}")
     public List<Job> getJobsWithSketch(@PathVariable("drawing") String drawing) {
         return jobService.getJobsWithSketch(drawing);
