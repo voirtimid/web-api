@@ -53,11 +53,13 @@ public class Task {
 
     private LocalTime endWorkTime;
 
-    private Double plannedHours;
+    private Double plannedHours = 0D;
 
-    private Double totalWorkTime;
+    private Double totalWorkTime = 0D;
 
-    private Integer minutesForPiece;
+    private Double minutesForPiece = 0D;
+
+    private Double realMinutesForPiece = 0D;
 
     private boolean isFinished;
 
