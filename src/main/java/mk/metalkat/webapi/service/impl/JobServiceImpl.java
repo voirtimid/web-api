@@ -140,7 +140,7 @@ public class JobServiceImpl implements JobService {
         }
 
         LocalDate startDate = tasks.stream()
-                .filter(task -> task.getRealEndDate() != null)
+                .filter(task -> task.getRealStartDate() != null)
                 .map(Task::getRealStartDate)
                 .min(Comparator.naturalOrder()).orElse(null);
 

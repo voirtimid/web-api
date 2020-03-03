@@ -23,12 +23,12 @@ public class SketchServiceImpl implements SketchService {
 
     @Override
     public Sketch getSketchByName(String drawing) {
-        return sketchRepository.findByDrawingContaining(drawing);
+        return sketchRepository.findFirstByDrawingContaining(drawing);
     }
 
     @Override
     public Sketch createNewSketch(Sketch sketch) {
-        Sketch firstBySketchName = sketchRepository.findByDrawingContaining(sketch.getDrawing());
+        Sketch firstBySketchName = sketchRepository.findFirstByDrawingContaining(sketch.getDrawing());
         if (firstBySketchName != null) {
             throw new ModelNotFoundException("Sketch with this name already exist");
         }
