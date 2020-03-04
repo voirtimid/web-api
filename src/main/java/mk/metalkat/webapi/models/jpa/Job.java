@@ -26,7 +26,7 @@ public class Job {
     @JoinColumn(name = "sketch_id")
     private Sketch sketch;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "job", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Task> tasks = new ArrayList<>();
 
     private LocalDate jobCreated;

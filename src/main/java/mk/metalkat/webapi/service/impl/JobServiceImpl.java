@@ -85,10 +85,20 @@ public class JobServiceImpl implements JobService {
             Job job = optionJob.get();
             Task newTask = optionTask.get();
             if (job.addTask(newTask)) {
-                newTask.setJob(job);
-                taskRepository.save(newTask);
-                jobRepository.save(job);
-                return job;
+//                Job job = jobRepository.findById(taskDTO.getJobId()).orElseThrow(() -> new ModelNotFoundException("The job does not exist"));
+                job.setPlannedStartDate(task.getPlannedStartDate());
+                job.setPlannedEndDate(task.getPlannedEndDate());
+
+                Double jobTotalMinutesForPiece = job.getTasks().stream().filter(task1 -> !task1.getTaskId().equals(task.getTaskId())).map(Task::getMinutesForPiece).reduce((Double::sum)).orElse(0d);
+                Double jobTotalWorkTime = job.getTasks().stream().filter(task1 -> !task1.getTaskId().equals(task.getTaskId())).map(Task::getPlannedHours).reduce(Double::sum).orElse(0d);
+
+                job.setPlannedTimeForPiece(jobTotalMinutesForPiece + task.getMinutesForPiece());
+                job.setPlannedHours(jobTotalWorkTime + task.getPlannedHours());
+
+//                Job updatedJob = jobRepository.saveAndFlush(job);
+//                newTask.setJob(job);
+//                taskRepository.save(newTask);
+                return jobRepository.save(job);
             }
         }
         return null;

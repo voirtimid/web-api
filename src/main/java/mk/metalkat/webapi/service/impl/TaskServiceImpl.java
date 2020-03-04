@@ -43,17 +43,8 @@ public class TaskServiceImpl implements TaskService {
             return null;
         }
 
-        Job job = jobRepository.findById(taskDTO.getJobId()).orElseThrow(() -> new ModelNotFoundException("The job does not exist"));
-        job.setPlannedStartDate(task.getPlannedStartDate());
-        job.setPlannedEndDate(task.getPlannedEndDate());
+        Job updatedJob = jobRepository.findById(taskDTO.getJobId()).orElseThrow(() -> new ModelNotFoundException("The job does not exist"));
 
-        Double jobTotalMinutesForPiece = job.getTasks().stream().filter(task1 -> !task1.getTaskId().equals(task.getTaskId())).map(Task::getMinutesForPiece).reduce((Double::sum)).orElse(0d);
-        Double jobTotalWorkTime = job.getTasks().stream().filter(task1 -> !task1.getTaskId().equals(task.getTaskId())).map(Task::getPlannedHours).reduce(Double::sum).orElse(0d);
-
-        job.setPlannedTimeForPiece(jobTotalMinutesForPiece + taskDTO.getPlannedMinutesForPiece());
-        job.setPlannedHours(jobTotalWorkTime + task.getPlannedHours());
-
-        Job updatedJob = jobRepository.saveAndFlush(job);
         task.setJob(updatedJob);
         Employee employee = employeeRepository.findById(taskDTO.getEmployeeId()).orElseThrow(() -> new ModelNotFoundException("The employee does not exist"));
         task.setEmployee(employee);
