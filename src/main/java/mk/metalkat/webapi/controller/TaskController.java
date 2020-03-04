@@ -73,16 +73,16 @@ public class TaskController {
         return taskService.setCncCode(taskId, cncId);
     }
 
-    @PutMapping(value = "/{taskId}/startWorkTime")
-    public Task startWorkTime(@PathVariable("taskId") Long taskId) {
-        return taskService.startTaskWorkTime(taskId);
-    }
-
-    @PutMapping(value = "/{taskId}/endWorkTime")
-    public Task endWorkTime(@PathVariable("taskId") Long taskId) {
-        return taskService.endTaskWorkTime(taskId);
-    }
-
+//    @PutMapping(value = "/{taskId}/startWorkTime")
+//    public Task startWorkTime(@PathVariable("taskId") Long taskId) {
+//        return taskService.startTaskWorkTime(taskId);
+//    }
+//
+//    @PutMapping(value = "/{taskId}/endWorkTime")
+//    public Task endWorkTime(@PathVariable("taskId") Long taskId) {
+//        return taskService.endTaskWorkTime(taskId);
+//    }
+//
     @PutMapping(value = "/{taskId}/complete")
     public Task completeTask(@PathVariable("taskId") Long taskId) {
         return taskService.completeTask(taskId);

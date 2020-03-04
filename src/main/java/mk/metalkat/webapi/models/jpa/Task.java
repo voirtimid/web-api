@@ -49,10 +49,6 @@ public class Task {
 
     private LocalDate realEndDate;
 
-    private LocalTime startWorkTime;
-
-    private LocalTime endWorkTime;
-
     private Double plannedHours = 0D;
 
     private Double totalWorkTime = 0D;

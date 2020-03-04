@@ -101,6 +101,11 @@ public class TaskServiceImpl implements TaskService {
 
         if (optionTask.isPresent()) {
             Task task = optionTask.get();
+            Job job = task.getJob();
+            job.removeTask(task);
+            job.setPlannedTimeForPiece(job.getPlannedTimeForPiece() - task.getMinutesForPiece());
+            job.setPlannedHours(job.getPlannedHours() - task.getPlannedHours());
+            jobRepository.save(job);
             taskRepository.delete(task);
             return task;
         }
@@ -163,39 +168,30 @@ public class TaskServiceImpl implements TaskService {
                 .collect(Collectors.toList());
     }
 
-    @Override
-    public Task startTaskWorkTime(Long taskId) {
-        Task task = getTask(taskId);
-        task.setStartWorkTime(LocalTime.now());
-        task.setWorkInProgress(true);
-        return updateTask(taskId, task);
-    }
-
-    @Override
-    public Task endTaskWorkTime(Long taskId) {
-        Task task = getTask(taskId);
-        task.setEndWorkTime(LocalTime.now());
-        task.setWorkInProgress(false);
-
-        long startWorkTime = task.getStartWorkTime().toNanoOfDay();
-        long endWorkTime = task.getEndWorkTime().toNanoOfDay();
-
-        task.setTotalWorkTime(task.getTotalWorkTime() + endWorkTime - startWorkTime);
-        return updateTask(taskId, task);
-    }
-
+//    @Override
+//    public Task startTaskWorkTime(Long taskId) {
+//        Task task = getTask(taskId);
+//        task.setStartWorkTime(LocalTime.now());
+//        task.setWorkInProgress(true);
+//        return updateTask(taskId, task);
+//    }
+//
+//    @Override
+//    public Task endTaskWorkTime(Long taskId) {
+//        Task task = getTask(taskId);
+//        task.setEndWorkTime(LocalTime.now());
+//        task.setWorkInProgress(false);
+//
+//        long startWorkTime = task.getStartWorkTime().toNanoOfDay();
+//        long endWorkTime = task.getEndWorkTime().toNanoOfDay();
+//
+//        task.setTotalWorkTime(task.getTotalWorkTime() + endWorkTime - startWorkTime);
+//        return updateTask(taskId, task);
+//    }
+//
     @Override
     public Task completeTask(Long taskId) {
         Task task = getTask(taskId);
-        if (task.isWorkInProgress()) {
-            task.setEndWorkTime(LocalTime.now());
-            task.setWorkInProgress(false);
-
-            long startWorkTime = task.getStartWorkTime().toNanoOfDay();
-            long endWorkTime = task.getEndWorkTime().toNanoOfDay();
-
-            task.setTotalWorkTime(task.getTotalWorkTime() + endWorkTime - startWorkTime);
-        }
         task.setFinished(true);
         return updateTask(taskId, task);
     }
