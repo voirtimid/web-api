@@ -5,6 +5,7 @@ import mk.metalkat.webapi.models.jpa.Job;
 import mk.metalkat.webapi.models.jpa.Task;
 import org.springframework.data.domain.Page;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface JobService {
@@ -20,6 +21,10 @@ public interface JobService {
     List<Job> getAllJobs();
 
     Page<Job> getAllJobsPaged(int page, int size);
+
+    Page<Job> getAllJobsHistoryPaged(int page, int size);
+
+    Page<Job> getAllJobsBetweenDates(LocalDate from, LocalDate to);
 
     Job addTask(Long jobId, Task task);
 

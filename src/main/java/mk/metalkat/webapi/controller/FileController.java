@@ -3,6 +3,7 @@ package mk.metalkat.webapi.controller;
 import lombok.RequiredArgsConstructor;
 import mk.metalkat.webapi.models.jpa.Cnc;
 import mk.metalkat.webapi.service.CNCService;
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -17,7 +18,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -33,6 +33,36 @@ public class FileController {
     private String UPLOADED_FOLDER;
 
     private final CNCService cncService;
+
+    @GetMapping("/copy/{from}/{to}")
+    public boolean copyFolders(@PathVariable("from") String from, @PathVariable("to") String to) {
+        String filePathFrom = UPLOADED_FOLDER + from + "/";
+        String filePathTo = UPLOADED_FOLDER + to + "/";
+
+        File fileFrom = new File(filePathFrom);
+        File fileTo = new File(filePathTo);
+
+
+        try {
+            FileUtils.copyDirectory(fileFrom, fileTo);
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+    @GetMapping("/rename/{from}/{to}")
+    public boolean renameFolders(@PathVariable("from") String from, @PathVariable("to") String to) {
+        String filePathFrom = UPLOADED_FOLDER + from + "/";
+        String filePathTo = UPLOADED_FOLDER + to + "/";
+
+        File fileFrom = new File(filePathFrom);
+        File fileTo = new File(filePathTo);
+
+        return fileFrom.renameTo(fileTo);
+    }
 
     @GetMapping("/downloadFile/{folderName}/{fileName}")
     public ResponseEntity<Resource> downloadFile(@PathVariable String fileName, HttpServletRequest request, @PathVariable("folderName") String folderName) throws IOException {

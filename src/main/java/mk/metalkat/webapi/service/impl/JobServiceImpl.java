@@ -12,6 +12,7 @@ import mk.metalkat.webapi.repository.TaskRepository;
 import mk.metalkat.webapi.service.JobService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -73,7 +74,18 @@ public class JobServiceImpl implements JobService {
 
     @Override
     public Page<Job> getAllJobsPaged(int page, int size) {
-        return jobRepository.findAll(PageRequest.of(page, size));
+        return jobRepository.findAll(PageRequest.of(page, size, Sort.by("plannedStartDate").ascending()));
+    }
+
+    @Override
+    public Page<Job> getAllJobsHistoryPaged(int page, int size) {
+        return jobRepository.findAll(PageRequest.of(page, size, Sort.by("jobFinished").descending()));
+    }
+
+
+    @Override
+    public Page<Job> getAllJobsBetweenDates(LocalDate from, LocalDate to) {
+        return null;
     }
 
     @Override
@@ -85,7 +97,6 @@ public class JobServiceImpl implements JobService {
             Job job = optionJob.get();
             Task newTask = optionTask.get();
             if (job.addTask(newTask)) {
-//                Job job = jobRepository.findById(taskDTO.getJobId()).orElseThrow(() -> new ModelNotFoundException("The job does not exist"));
                 job.setPlannedStartDate(task.getPlannedStartDate());
                 job.setPlannedEndDate(task.getPlannedEndDate());
 
@@ -95,9 +106,6 @@ public class JobServiceImpl implements JobService {
                 job.setPlannedTimeForPiece(jobTotalMinutesForPiece + task.getMinutesForPiece());
                 job.setPlannedHours(jobTotalWorkTime + task.getPlannedHours());
 
-//                Job updatedJob = jobRepository.saveAndFlush(job);
-//                newTask.setJob(job);
-//                taskRepository.save(newTask);
                 return jobRepository.save(job);
             }
         }
