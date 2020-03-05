@@ -10,7 +10,6 @@ import mk.metalkat.webapi.service.TaskService;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -96,6 +95,8 @@ public class TaskServiceImpl implements TaskService {
             job.removeTask(task);
             job.setPlannedTimeForPiece(job.getPlannedTimeForPiece() - task.getMinutesForPiece());
             job.setPlannedHours(job.getPlannedHours() - task.getPlannedHours());
+            job.setRealHours(job.getRealHours() - task.getRealMinutesForPiece());
+            job.setRealTimeForPiece(job.getRealTimeForPiece() - task.getRealMinutesForPiece());
             jobRepository.save(job);
             taskRepository.delete(task);
             return task;
