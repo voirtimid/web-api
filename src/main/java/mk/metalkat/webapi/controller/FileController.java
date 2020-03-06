@@ -22,7 +22,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-@CrossOrigin("http://localhost:3000")
+@CrossOrigin(origins = {"http://localhost:3000", "http://192.168.43.211:3000"})
 @RestController
 @RequestMapping("/upload")
 @RequiredArgsConstructor
