@@ -1,6 +1,7 @@
 package mk.metalkat.webapi.service;
 
 import mk.metalkat.webapi.models.dto.JobDTO;
+import mk.metalkat.webapi.models.dto.LocalDateDTO;
 import mk.metalkat.webapi.models.jpa.Job;
 import mk.metalkat.webapi.models.jpa.Task;
 import org.springframework.data.domain.Page;
@@ -41,4 +42,10 @@ public interface JobService {
     List<Job> getJobsWithSketch(String drawing);
 
     Job completeJob(Long jobId);
+
+    List<Job> getAllFilteredJobs(LocalDate from, LocalDate to, String attribute);
+
+    List<Job> getAllJobsCreatedBetween(LocalDate from, LocalDate to);
+
+    List<Job> getAllJobsFinishedBetween(LocalDate from, LocalDate to);
 }

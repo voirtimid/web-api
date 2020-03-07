@@ -1,12 +1,12 @@
 package mk.metalkat.webapi.controller;
 
 import lombok.RequiredArgsConstructor;
+import mk.metalkat.webapi.models.dto.FilterJobDTO;
+import mk.metalkat.webapi.models.dto.JobDTO;
 import mk.metalkat.webapi.models.jpa.Job;
 import mk.metalkat.webapi.models.jpa.Task;
-import mk.metalkat.webapi.models.dto.JobDTO;
 import mk.metalkat.webapi.service.JobService;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -50,49 +50,54 @@ public class JobController {
         return jobService.saveJob(jobDTO);
     }
 
-    @GetMapping(value = "/{jobId}")
+    @GetMapping("/{jobId}")
     public Job getJobById(@PathVariable("jobId") Long jobId) {
         return jobService.getJob(jobId);
     }
 
-    @PutMapping(value = "/{jobId}")
+    @PutMapping("/{jobId}")
     public Job updateJob(@PathVariable("jobId") Long jobId, @RequestBody Job job) {
         return jobService.updateJob(jobId, job);
     }
 
-    @DeleteMapping(value = "/{jobId}")
+    @DeleteMapping("/{jobId}")
     public Job deleteJob(@PathVariable("jobId") Long jobId) {
         return jobService.deleteJob(jobId);
     }
 
-    @PutMapping(value = "/{jobId}/addTask")
+    @PutMapping("/{jobId}/addTask")
     public Job addTaskToJob(@PathVariable("jobId") Long jobId, @RequestBody Task task) {
         return jobService.addTask(jobId, task);
     }
 
-    @GetMapping(value = "/{jobId}/tasks")
+    @GetMapping("/{jobId}/tasks")
     public List<Task> getAllTaskForJob(@PathVariable("jobId") Long jobId) {
         return jobService.getTaskForJob(jobId);
     }
 
-    @GetMapping(value = "/updateDates/{jobId}")
+    @GetMapping("/updateDates/{jobId}")
     public Job updateDates(@PathVariable("jobId") Long jobId) {
         return jobService.updateStartAndEndDate(jobId);
     }
 
-    @GetMapping(value = "/updateRealDates/{jobId}")
+    @GetMapping("/updateRealDates/{jobId}")
     public Job updateRealDates(@PathVariable("jobId") Long jobId) {
         return jobService.updateActualDates(jobId);
     }
 
-    @GetMapping(value = "/getJobsFor/{drawing}")
+    @GetMapping("/getJobsFor/{drawing}")
     public List<Job> getJobsWithSketch(@PathVariable("drawing") String drawing) {
         return jobService.getJobsWithSketch(drawing);
     }
 
-    @GetMapping(value = "/{jobId}/complete")
+    @GetMapping("/{jobId}/complete")
     public Job completeJob(@PathVariable("jobId") Long jobId) {
         return jobService.completeJob(jobId);
+    }
+
+    @PostMapping("/filtered")
+    public List<Job> getAllJobsCreatedBetween(@RequestBody FilterJobDTO filterJobDTO) {
+        return jobService.getAllFilteredJobs(filterJobDTO.getStartDate(), filterJobDTO.getEndDate(), filterJobDTO.getForWhat());
     }
 
 }

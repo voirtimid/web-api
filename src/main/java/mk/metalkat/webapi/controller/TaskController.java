@@ -2,7 +2,7 @@ package mk.metalkat.webapi.controller;
 
 import lombok.RequiredArgsConstructor;
 import mk.metalkat.webapi.models.jpa.Task;
-import mk.metalkat.webapi.models.dto.DateTimeDTO;
+import mk.metalkat.webapi.models.dto.LocalDateDTO;
 import mk.metalkat.webapi.models.dto.TaskDTO;
 import mk.metalkat.webapi.service.TaskService;
 import org.springframework.web.bind.annotation.*;
@@ -89,8 +89,8 @@ public class TaskController {
     }
 
     @PostMapping(value = "/checkTimeSlots")
-    public boolean isTimeSlotAvailable(@RequestBody DateTimeDTO dateTimeDTO) {
-        return taskService.checkIfSlotIsAvailable(dateTimeDTO);
+    public boolean isTimeSlotAvailable(@RequestBody LocalDateDTO localDateDTO) {
+        return taskService.checkIfSlotIsAvailable(localDateDTO);
     }
 
     @GetMapping(value = "/findSlot/{machineId}")

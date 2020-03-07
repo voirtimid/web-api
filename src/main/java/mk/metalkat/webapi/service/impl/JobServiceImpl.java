@@ -16,6 +16,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -191,5 +192,31 @@ public class JobServiceImpl implements JobService {
             return jobRepository.saveAndFlush(job);
         }
         return job;
+    }
+
+    @Override
+    public List<Job> getAllFilteredJobs(LocalDate from, LocalDate to, String attribute) {
+        if (attribute.equals("created")) {
+            return getAllJobsCreatedBetween(from, to);
+        } else if (attribute.equals("finished")) {
+            return getAllJobsFinishedBetween(from, to);
+        }
+        return new ArrayList<>();
+    }
+
+    @Override
+    public List<Job> getAllJobsCreatedBetween(LocalDate from, LocalDate to) {
+        return jobRepository.findAll().stream()
+                .filter(Job::isFinished)
+                .filter(job -> (job.getJobCreated().isAfter(from) || job.getJobCreated().isEqual(from)) && (job.getJobCreated().isBefore(to) || job.getJobCreated().isEqual(to)))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Job> getAllJobsFinishedBetween(LocalDate from, LocalDate to) {
+        return jobRepository.findAll().stream()
+                .filter(Job::isFinished)
+                .filter(job -> (job.getJobFinished().isAfter(from) || job.getJobFinished().isEqual(from)) && (job.getJobFinished().isBefore(to) || job.getJobFinished().isEqual(to)))
+                .collect(Collectors.toList());
     }
 }

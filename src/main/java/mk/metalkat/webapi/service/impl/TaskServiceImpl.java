@@ -2,7 +2,7 @@ package mk.metalkat.webapi.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import mk.metalkat.webapi.exceptions.ModelNotFoundException;
-import mk.metalkat.webapi.models.dto.DateTimeDTO;
+import mk.metalkat.webapi.models.dto.LocalDateDTO;
 import mk.metalkat.webapi.models.dto.TaskDTO;
 import mk.metalkat.webapi.models.jpa.*;
 import mk.metalkat.webapi.repository.*;
@@ -189,12 +189,12 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public boolean checkIfSlotIsAvailable(DateTimeDTO dateTimeDTO) {
+    public boolean checkIfSlotIsAvailable(LocalDateDTO localDateDTO) {
         List<Task> allTasks = taskRepository.findAll();
         if (allTasks.isEmpty()) {
             return true;
         }
-        LocalDate startDate = dateTimeDTO.getStartDate();
+        LocalDate startDate = localDateDTO.getStartDate();
         return allTasks.stream().allMatch(task -> task.getPlannedEndDate().isBefore(startDate));
     }
 
