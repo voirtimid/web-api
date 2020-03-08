@@ -7,6 +7,8 @@ import mk.metalkat.webapi.models.jpa.Job;
 import mk.metalkat.webapi.models.jpa.Task;
 import mk.metalkat.webapi.service.JobService;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -96,8 +98,12 @@ public class JobController {
     }
 
     @PostMapping("/filtered")
-    public List<Job> getAllJobsCreatedBetween(@RequestBody FilterJobDTO filterJobDTO) {
-        return jobService.getAllFilteredJobs(filterJobDTO.getStartDate(), filterJobDTO.getEndDate(), filterJobDTO.getForWhat());
+    public Page<Job> getAllJobsCreatedBetween(@RequestHeader(name = "page", defaultValue = "0", required = false) int page,
+                                              @RequestHeader(name = "size", defaultValue = "10", required = false) int size,
+                                              @RequestBody FilterJobDTO filterJobDTO) {
+        List<Job> allFilteredJobs = jobService.getAllFilteredJobs(filterJobDTO.getStartDate(), filterJobDTO.getEndDate(), filterJobDTO.getForWhat());
+        return new PageImpl<>(allFilteredJobs);
+//        return jobService.getAllFilteredJobs(filterJobDTO.getStartDate(), filterJobDTO.getEndDate(), filterJobDTO.getForWhat());
     }
 
 }
