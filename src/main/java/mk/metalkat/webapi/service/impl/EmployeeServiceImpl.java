@@ -47,8 +47,8 @@ public class EmployeeServiceImpl implements EmployeeService {
             return null;
         }
         Employee employee = employeeRepository.findById(employeeId).get();
-        employeeRepository.delete(employee);
-        return employee;
+        employee.setDeleted(true);
+        return employeeRepository.saveAndFlush(employee);
     }
 
     @Override

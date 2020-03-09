@@ -53,8 +53,8 @@ public class MachineServiceImpl implements MachineService {
 
         if (optionalMachine.isPresent()) {
             Machine toDelete = optionalMachine.get();
-            machineRepository.delete(toDelete);
-            return toDelete;
+            toDelete.setDeleted(true);
+            return machineRepository.saveAndFlush(toDelete);
         }
         return null;
     }

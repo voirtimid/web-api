@@ -20,6 +20,8 @@ public class Employee {
 
     private String lastName;
 
+    private boolean isDeleted = false;
+
     @OneToOne
     @JoinColumn(name = "user_id")
     private User user;

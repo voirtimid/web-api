@@ -23,4 +23,6 @@ public class Machine {
     private String shortName;
 
     private String description;
+
+    private boolean isDeleted = false;
 }
