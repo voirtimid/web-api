@@ -2,6 +2,7 @@ package mk.metalkat.webapi.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import mk.metalkat.webapi.exceptions.ModelNotFoundException;
+import mk.metalkat.webapi.models.enums.Status;
 import mk.metalkat.webapi.models.jpa.Job;
 import mk.metalkat.webapi.models.jpa.Sketch;
 import mk.metalkat.webapi.models.jpa.Task;
@@ -107,6 +108,12 @@ public class JobServiceImpl implements JobService {
                 job.setPlannedTimeForPiece(jobTotalMinutesForPiece + task.getMinutesForPiece());
                 job.setPlannedHours(jobTotalWorkTime + task.getPlannedHours());
 
+                if (job.getTasks().stream().anyMatch(task1 -> task1.getStatus().equals(Status.BEHIND))) {
+                    job.setStatus(Status.BEHIND);
+                } else if (job.getTasks().stream().anyMatch(task1 -> task1.getStatus().equals(Status.TODAY))) {
+                    job.setStatus(Status.TODAY);
+                }
+
                 return jobRepository.save(job);
             }
         }
@@ -147,6 +154,14 @@ public class JobServiceImpl implements JobService {
 
         job.setPlannedStartDate(startDate);
         job.setPlannedEndDate(endDate);
+
+
+        if (job.getTasks().stream().anyMatch(task1 -> task1.getStatus().equals(Status.BEHIND))) {
+            job.setStatus(Status.BEHIND);
+        } else if (job.getTasks().stream().anyMatch(task1 -> task1.getStatus().equals(Status.TODAY))) {
+            job.setStatus(Status.TODAY);
+        }
+
         return jobRepository.save(job);
     }
 
@@ -170,6 +185,14 @@ public class JobServiceImpl implements JobService {
 
         job.setRealStartDate(startDate);
         job.setRealEndDate(endDate);
+
+
+        if (job.getTasks().stream().anyMatch(task1 -> task1.getStatus().equals(Status.BEHIND))) {
+            job.setStatus(Status.BEHIND);
+        } else if (job.getTasks().stream().anyMatch(task1 -> task1.getStatus().equals(Status.TODAY))) {
+            job.setStatus(Status.TODAY);
+        }
+
         return jobRepository.saveAndFlush(job);
     }
 
@@ -189,6 +212,7 @@ public class JobServiceImpl implements JobService {
         if (job.getTasks().stream().allMatch(Task::isFinished)) {
             job.setJobFinished(LocalDate.now());
             job.setFinished(true);
+            job.setStatus(Status.FINISHED);
             return jobRepository.saveAndFlush(job);
         }
         return job;

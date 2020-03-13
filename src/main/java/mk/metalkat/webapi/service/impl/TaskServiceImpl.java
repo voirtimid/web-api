@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import mk.metalkat.webapi.exceptions.ModelNotFoundException;
 import mk.metalkat.webapi.models.dto.LocalDateDTO;
 import mk.metalkat.webapi.models.dto.TaskDTO;
+import mk.metalkat.webapi.models.enums.Status;
 import mk.metalkat.webapi.models.jpa.*;
 import mk.metalkat.webapi.repository.*;
 import mk.metalkat.webapi.service.TaskService;
@@ -55,6 +56,11 @@ public class TaskServiceImpl implements TaskService {
         int size = updatedJob.getTasks().size();
         task.setTaskName(updatedJob.getJobName() + " Task " + (size + 1));
 
+        LocalDate plannedStartDate = task.getPlannedStartDate();
+        if (plannedStartDate.isEqual(LocalDate.now())) {
+            task.setStatus(Status.TODAY);
+        }
+
         return taskRepository.save(task);
     }
 
@@ -74,6 +80,28 @@ public class TaskServiceImpl implements TaskService {
 
         Job updatedJob = jobRepository.saveAndFlush(job);
         task.setJob(updatedJob);
+
+
+        LocalDate plannedStartDate = task.getPlannedStartDate();
+        LocalDate now = LocalDate.now();
+
+        if (task.getRealEndDate() == null) {
+            if (task.getRealStartDate() != null) {
+                LocalDate plannedEndDate = task.getPlannedEndDate();
+                if (!plannedEndDate.isBefore(now)) {
+                    task.setStatus(Status.NORMAL);
+                } else {
+                    task.setStatus(Status.BEHIND);
+                }
+            } else {
+                if (plannedStartDate.isBefore(now)) {
+                    task.setStatus(Status.BEHIND);
+                } else {
+                    task.setStatus(Status.NORMAL);
+                }
+            }
+        }
+
         return taskRepository.saveAndFlush(task);
     }
 
@@ -185,6 +213,7 @@ public class TaskServiceImpl implements TaskService {
     public Task completeTask(Long taskId) {
         Task task = getTask(taskId);
         task.setFinished(true);
+        task.setStatus(Status.FINISHED);
         return updateTask(taskId, task);
     }
 

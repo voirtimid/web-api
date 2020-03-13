@@ -3,6 +3,7 @@ package mk.metalkat.webapi.models.jpa;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import mk.metalkat.webapi.models.enums.Status;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -28,6 +29,8 @@ public class Job {
 
     @OneToMany(mappedBy = "job", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Task> tasks = new ArrayList<>();
+
+    private Status status = Status.NORMAL;
 
     private LocalDate jobCreated;
 

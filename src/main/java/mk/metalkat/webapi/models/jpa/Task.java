@@ -4,10 +4,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import mk.metalkat.webapi.models.enums.Status;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.time.LocalTime;
 
 @Data
 @AllArgsConstructor
@@ -38,6 +38,8 @@ public class Task {
     @OneToOne
     @JoinColumn(name = "cnc_code_id")
     private Cnc cncCode;
+
+    private Status status = Status.NORMAL;
 
     private String comment;
 
