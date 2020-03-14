@@ -6,8 +6,6 @@ import mk.metalkat.webapi.models.jpa.Job;
 import mk.metalkat.webapi.models.jpa.Task;
 import mk.metalkat.webapi.repository.JobRepository;
 import mk.metalkat.webapi.repository.TaskRepository;
-import mk.metalkat.webapi.service.JobService;
-import mk.metalkat.webapi.service.TaskService;
 import mk.metalkat.webapi.service.UpdaterScheduler;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -36,10 +34,14 @@ public class UpdaterSchedulerImpl implements UpdaterScheduler {
         tasks.stream()
                 .map(this::updateTaskStatus).forEach(taskRepository::save);
 
+        System.out.println("Updating tasks");
+
         jobRepository.findAll().stream()
                 .filter(job -> !job.isFinished())
                 .map(this::updateJobStatus)
                 .forEach(jobRepository::save);
+
+        System.out.println("Updating orders");
 
     }
 
@@ -48,6 +50,8 @@ public class UpdaterSchedulerImpl implements UpdaterScheduler {
             job.setStatus(Status.BEHIND);
         } else if (job.getTasks().stream().anyMatch(task1 -> task1.getStatus().equals(Status.TODAY))) {
             job.setStatus(Status.TODAY);
+        } else {
+            job.setStatus(Status.NORMAL);
         }
         return job;
     }

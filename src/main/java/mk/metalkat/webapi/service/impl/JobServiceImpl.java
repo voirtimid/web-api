@@ -160,6 +160,8 @@ public class JobServiceImpl implements JobService {
             job.setStatus(Status.BEHIND);
         } else if (job.getTasks().stream().anyMatch(task1 -> task1.getStatus().equals(Status.TODAY))) {
             job.setStatus(Status.TODAY);
+        } else {
+            job.setStatus(Status.NORMAL);
         }
 
         return jobRepository.save(job);
@@ -191,6 +193,8 @@ public class JobServiceImpl implements JobService {
             job.setStatus(Status.BEHIND);
         } else if (job.getTasks().stream().anyMatch(task1 -> task1.getStatus().equals(Status.TODAY))) {
             job.setStatus(Status.TODAY);
+        } else {
+            job.setStatus(Status.NORMAL);
         }
 
         return jobRepository.saveAndFlush(job);
