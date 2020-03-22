@@ -100,6 +100,8 @@ public class TaskServiceImpl implements TaskService {
                     task.setStatus(Status.NORMAL);
                 }
             }
+        } else {
+            task.setStatus(Status.NORMAL);
         }
 
         return taskRepository.saveAndFlush(task);
