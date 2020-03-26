@@ -101,7 +101,7 @@ public class JobController {
     public Page<Job> getAllJobsCreatedBetween(@RequestHeader(name = "page", defaultValue = "0", required = false) int page,
                                               @RequestHeader(name = "size", defaultValue = "10", required = false) int size,
                                               @RequestBody FilterJobDTO filterJobDTO) {
-        List<Job> allFilteredJobs = jobService.getAllFilteredJobs(filterJobDTO.getStartDate(), filterJobDTO.getEndDate(), filterJobDTO.getForWhat());
+        List<Job> allFilteredJobs = jobService.getAllFilteredJobs(filterJobDTO);
         return new PageImpl<>(allFilteredJobs);
 //        return jobService.getAllFilteredJobs(filterJobDTO.getStartDate(), filterJobDTO.getEndDate(), filterJobDTO.getForWhat());
     }

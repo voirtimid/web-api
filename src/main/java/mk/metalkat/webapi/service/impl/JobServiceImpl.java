@@ -2,6 +2,7 @@ package mk.metalkat.webapi.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import mk.metalkat.webapi.exceptions.ModelNotFoundException;
+import mk.metalkat.webapi.models.dto.FilterJobDTO;
 import mk.metalkat.webapi.models.enums.Status;
 import mk.metalkat.webapi.models.jpa.Job;
 import mk.metalkat.webapi.models.jpa.Sketch;
@@ -223,13 +224,31 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
-    public List<Job> getAllFilteredJobs(LocalDate from, LocalDate to, String attribute) {
+    public List<Job> getAllFilteredJobs(FilterJobDTO filterJobDTO) {
+        LocalDate from = filterJobDTO.getStartDate();
+        LocalDate to = filterJobDTO.getEndDate();
+        String attribute = filterJobDTO.getForWhat();
+        String sketchName = filterJobDTO.getSketchName();
+
+        List<Job> result = new ArrayList<>();
         if (attribute.equals("created")) {
-            return getAllJobsCreatedBetween(from, to);
+            if (!sketchName.equals("")) {
+                result = getAllJobsCreatedBetween(from, to).stream()
+                        .filter(job -> job.getSketch().getSketchName().toLowerCase().contains(sketchName.toLowerCase()))
+                        .collect(Collectors.toList());
+            } else {
+                result = getAllJobsCreatedBetween(from, to);
+            }
         } else if (attribute.equals("finished")) {
-            return getAllJobsFinishedBetween(from, to);
+            if (!sketchName.equals("")) {
+                result = getAllJobsFinishedBetween(from, to).stream()
+                        .filter(job -> job.getSketch().getSketchName().toLowerCase().contains(sketchName.toLowerCase()))
+                        .collect(Collectors.toList());
+            } else {
+                result = getAllJobsFinishedBetween(from, to);
+            }
         }
-        return new ArrayList<>();
+        return result;
     }
 
     @Override

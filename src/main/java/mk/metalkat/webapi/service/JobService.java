@@ -1,5 +1,6 @@
 package mk.metalkat.webapi.service;
 
+import mk.metalkat.webapi.models.dto.FilterJobDTO;
 import mk.metalkat.webapi.models.dto.JobDTO;
 import mk.metalkat.webapi.models.dto.LocalDateDTO;
 import mk.metalkat.webapi.models.jpa.Job;
@@ -43,8 +44,7 @@ public interface JobService {
 
     Job completeJob(Long jobId);
 
-    List<Job> getAllFilteredJobs(LocalDate from, LocalDate to, String attribute);
-
+    List<Job> getAllFilteredJobs(FilterJobDTO filterJobDTO);
     List<Job> getAllJobsCreatedBetween(LocalDate from, LocalDate to);
 
     List<Job> getAllJobsFinishedBetween(LocalDate from, LocalDate to);

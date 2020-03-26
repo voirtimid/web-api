@@ -12,4 +12,6 @@ public class FilterJobDTO {
     private LocalDate endDate;
 
     private String forWhat;
+
+    private String sketchName;
 }
