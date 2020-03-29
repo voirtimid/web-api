@@ -1,6 +1,7 @@
 package mk.metalkat.webapi.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import mk.metalkat.webapi.exceptions.ModelNotFoundException;
 import mk.metalkat.webapi.models.jpa.Machine;
 import mk.metalkat.webapi.repository.MachineRepository;
 import mk.metalkat.webapi.service.MachineService;
@@ -25,10 +26,9 @@ public class MachineServiceImpl implements MachineService {
         Optional<Machine> optionalMachine = machineRepository.findById(machineId);
 
         if (optionalMachine.isPresent()) {
-            Machine machine = optionalMachine.get();
-            return machine;
+            return optionalMachine.get();
         }
-        return null;
+        throw new ModelNotFoundException("This machine does not exist!");
     }
 
     @Override
@@ -44,7 +44,7 @@ public class MachineServiceImpl implements MachineService {
                 return machineRepository.save(prevMachine);
             }
         }
-        return null;
+        throw new ModelNotFoundException("This machine does not exist!");
     }
 
     @Override
@@ -56,7 +56,7 @@ public class MachineServiceImpl implements MachineService {
             toDelete.setDeleted(true);
             return machineRepository.saveAndFlush(toDelete);
         }
-        return null;
+        throw new ModelNotFoundException("This machine does not exist!");
     }
 
     @Override

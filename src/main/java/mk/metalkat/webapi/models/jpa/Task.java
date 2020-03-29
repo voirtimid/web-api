@@ -62,4 +62,29 @@ public class Task {
     private boolean isFinished;
 
     private boolean workInProgress;
+
+    public static Task updateTaskStatus(Task task) {
+        LocalDate plannedStartDate = task.getPlannedStartDate();
+        LocalDate now = LocalDate.now();
+
+        if (task.getRealEndDate() == null) {
+            if (task.getRealStartDate() != null) {
+                LocalDate plannedEndDate = task.getPlannedEndDate();
+                if (!plannedEndDate.isBefore(now)) {
+                    task.setStatus(Status.NORMAL);
+                } else {
+                    task.setStatus(Status.BEHIND);
+                }
+            } else {
+                if (plannedStartDate.isBefore(now)) {
+                    task.setStatus(Status.BEHIND);
+                } else {
+                    task.setStatus(Status.NORMAL);
+                }
+            }
+        } else {
+            task.setStatus(Status.NORMAL);
+        }
+        return task;
+    }
 }

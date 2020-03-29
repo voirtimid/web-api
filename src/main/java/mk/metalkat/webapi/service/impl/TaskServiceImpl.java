@@ -32,7 +32,7 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public Task getTask(Long taskId) {
-        return taskRepository.findById(taskId).orElse(null);
+        return taskRepository.findById(taskId).orElseThrow(() -> new ModelNotFoundException("This task does not exist!"));
     }
 
     @Override
@@ -40,7 +40,7 @@ public class TaskServiceImpl implements TaskService {
 
         Task task = taskDTO.getTask();
         if (task.getTaskId() != null) {
-            return null;
+            throw new ModelNotFoundException("This task does not exist!");
         }
 
         Job updatedJob = jobRepository.findById(taskDTO.getJobId()).orElseThrow(() -> new ModelNotFoundException("The job does not exist"));
@@ -82,35 +82,15 @@ public class TaskServiceImpl implements TaskService {
         task.setJob(updatedJob);
 
 
-        LocalDate plannedStartDate = task.getPlannedStartDate();
-        LocalDate now = LocalDate.now();
+        Task updatedTask = Task.updateTaskStatus(task);
 
-        if (task.getRealEndDate() == null) {
-            if (task.getRealStartDate() != null) {
-                LocalDate plannedEndDate = task.getPlannedEndDate();
-                if (!plannedEndDate.isBefore(now)) {
-                    task.setStatus(Status.NORMAL);
-                } else {
-                    task.setStatus(Status.BEHIND);
-                }
-            } else {
-                if (plannedStartDate.isBefore(now)) {
-                    task.setStatus(Status.BEHIND);
-                } else {
-                    task.setStatus(Status.NORMAL);
-                }
-            }
-        } else {
-            task.setStatus(Status.NORMAL);
-        }
-
-        return taskRepository.saveAndFlush(task);
+        return taskRepository.saveAndFlush(updatedTask);
     }
 
     @Override
     public Task updateTask(Long taskId, Task task) {
         if (!taskRepository.findById(task.getTaskId()).isPresent() || !taskId.equals(task.getTaskId())) {
-            return null;
+            throw new ModelNotFoundException("This task does not exist!");
         }
         return taskRepository.save(task);
     }
@@ -132,7 +112,7 @@ public class TaskServiceImpl implements TaskService {
             return task;
         }
 
-        return null;
+        throw new ModelNotFoundException("This task does not exist!");
     }
 
     @Override
@@ -151,7 +131,7 @@ public class TaskServiceImpl implements TaskService {
             task.setMachine(machine);
             return taskRepository.save(task);
         }
-        return null;
+        throw new ModelNotFoundException("This task or machine does not exist!");
     }
 
     @Override
@@ -165,7 +145,7 @@ public class TaskServiceImpl implements TaskService {
             task.setEmployee(employee);
             return taskRepository.save(task);
         }
-        return null;
+        throw new ModelNotFoundException("This task or employee does not exist!");
     }
 
     @Override
@@ -179,7 +159,7 @@ public class TaskServiceImpl implements TaskService {
             task.setCncCode(cnc);
             return taskRepository.save(task);
         }
-        return null;
+        throw new ModelNotFoundException("This task or cnc code does not exist!");
     }
 
     @Override

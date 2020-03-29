@@ -2,7 +2,6 @@ package mk.metalkat.webapi.service;
 
 import mk.metalkat.webapi.models.dto.FilterJobDTO;
 import mk.metalkat.webapi.models.dto.JobDTO;
-import mk.metalkat.webapi.models.dto.LocalDateDTO;
 import mk.metalkat.webapi.models.jpa.Job;
 import mk.metalkat.webapi.models.jpa.Task;
 import org.springframework.data.domain.Page;
@@ -26,7 +25,7 @@ public interface JobService {
 
     Page<Job> getAllJobsHistoryPaged(int page, int size);
 
-    Page<Job> getAllJobsBetweenDates(LocalDate from, LocalDate to);
+//    Page<Job> getAllJobsBetweenDates(LocalDate from, LocalDate to);
 
     Job addTask(Long jobId, Task task);
 

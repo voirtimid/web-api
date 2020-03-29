@@ -86,10 +86,10 @@ public class JobServiceImpl implements JobService {
     }
 
 
-    @Override
-    public Page<Job> getAllJobsBetweenDates(LocalDate from, LocalDate to) {
-        return null;
-    }
+//    @Override
+//    public Page<Job> getAllJobsBetweenDates(LocalDate from, LocalDate to) {
+//        return null;
+//    }
 
     @Override
     public Job addTask(Long jobId, Task task) {
@@ -139,7 +139,7 @@ public class JobServiceImpl implements JobService {
 
     @Override
     public Job updateStartAndEndDate(Long jobId) {
-        Job job = jobRepository.findById(jobId).get();
+        Job job = jobRepository.findById(jobId).orElseThrow(() ->  new ModelNotFoundException("This job does not exist!"));
         List<Task> tasks = job.getTasks();
         if (tasks.isEmpty()) {
             return job;
@@ -156,21 +156,13 @@ public class JobServiceImpl implements JobService {
         job.setPlannedStartDate(startDate);
         job.setPlannedEndDate(endDate);
 
-
-        if (job.getTasks().stream().anyMatch(task1 -> task1.getStatus().equals(Status.BEHIND))) {
-            job.setStatus(Status.BEHIND);
-        } else if (job.getTasks().stream().anyMatch(task1 -> task1.getStatus().equals(Status.TODAY))) {
-            job.setStatus(Status.TODAY);
-        } else {
-            job.setStatus(Status.NORMAL);
-        }
-
-        return jobRepository.save(job);
+        Job updatedJob = Job.updateJobStatus(job);
+        return jobRepository.save(updatedJob);
     }
 
     @Override
     public Job updateActualDates(Long jobId) {
-        Job job = jobRepository.findById(jobId).get();
+        Job job = jobRepository.findById(jobId).orElseThrow(() ->  new ModelNotFoundException("This job does not exist!"));
         List<Task> tasks = job.getTasks();
         if (tasks.isEmpty()) {
             return job;
@@ -190,15 +182,8 @@ public class JobServiceImpl implements JobService {
         job.setRealEndDate(endDate);
 
 
-        if (job.getTasks().stream().anyMatch(task1 -> task1.getStatus().equals(Status.BEHIND))) {
-            job.setStatus(Status.BEHIND);
-        } else if (job.getTasks().stream().anyMatch(task1 -> task1.getStatus().equals(Status.TODAY))) {
-            job.setStatus(Status.TODAY);
-        } else {
-            job.setStatus(Status.NORMAL);
-        }
-
-        return jobRepository.saveAndFlush(job);
+        Job updatedJob = Job.updateJobStatus(job);
+        return jobRepository.saveAndFlush(updatedJob);
     }
 
     @Override
@@ -213,7 +198,7 @@ public class JobServiceImpl implements JobService {
 
     @Override
     public Job completeJob(Long jobId) {
-        Job job = jobRepository.findById(jobId).get();
+        Job job = jobRepository.findById(jobId).orElseThrow(() ->  new ModelNotFoundException("This job does not exist!"));
         if (job.getTasks().stream().allMatch(Task::isFinished)) {
             job.setJobFinished(LocalDate.now());
             job.setFinished(true);

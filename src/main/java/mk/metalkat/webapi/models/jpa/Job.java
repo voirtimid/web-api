@@ -60,7 +60,18 @@ public class Job {
         return tasks.add(task);
     }
 
-    public boolean removeTask(Task task) {
-        return tasks.remove(task);
+    public void removeTask(Task task) {
+        tasks.remove(task);
+    }
+
+    public static Job updateJobStatus(Job job) {
+        if (job.getTasks().stream().anyMatch(task1 -> task1.getStatus().equals(Status.BEHIND))) {
+            job.setStatus(Status.BEHIND);
+        } else if (job.getTasks().stream().anyMatch(task1 -> task1.getStatus().equals(Status.TODAY))) {
+            job.setStatus(Status.TODAY);
+        } else {
+            job.setStatus(Status.NORMAL);
+        }
+        return job;
     }
 }

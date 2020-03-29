@@ -71,7 +71,7 @@ public class FileController {
         Resource resource = new UrlResource(filePath.toUri());
 
         // Try to determine file's content type
-        String contentType = null;
+        String contentType;
         contentType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
 
         // Fallback to the default content type if type could not be determined
@@ -130,7 +130,7 @@ public class FileController {
             BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
 
             StringBuilder sb = new StringBuilder();
-            String line = "";
+            String line;
             while ((line = bufferedReader.readLine()) != null) {
                 sb.append(line);
             }
