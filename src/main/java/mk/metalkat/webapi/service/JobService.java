@@ -45,6 +45,7 @@ public interface JobService {
     Job completeJob(Long jobId);
 
     List<Job> getAllFilteredJobs(FilterJobDTO filterJobDTO);
+
     List<Job> getAllJobsCreatedBetween(LocalDate from, LocalDate to);
 
     List<Job> getAllJobsFinishedBetween(LocalDate from, LocalDate to);
