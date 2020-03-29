@@ -42,7 +42,6 @@ public class FileController {
         File fileFrom = new File(filePathFrom);
         File fileTo = new File(filePathTo);
 
-
         try {
             FileUtils.copyDirectory(fileFrom, fileTo);
             return true;
