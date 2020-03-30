@@ -29,8 +29,8 @@ public interface TaskService {
 
     List<Task> getAllTasksForMachine(Long machineId);
 
-//    Task startTaskWorkTime(Long taskId);
-//
+    Task startTaskWorkTime(Long taskId);
+
 //    Task endTaskWorkTime(Long taskId);
 
     Task completeTask(Long taskId);

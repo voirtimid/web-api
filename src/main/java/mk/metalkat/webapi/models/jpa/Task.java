@@ -55,13 +55,17 @@ public class Task {
 
     private Double totalWorkTime = 0D;
 
+    private Double trackedWorkTime = 0D;
+
+    private Double tempTrackedWorkTime = 0D;
+
     private Double minutesForPiece = 0D;
 
     private Double realMinutesForPiece = 0D;
 
-    private boolean isFinished;
+    private boolean isFinished = false;
 
-    private boolean workInProgress;
+    private boolean workInProgress = false;
 
     public static Task updateTaskStatus(Task task) {
         LocalDate plannedStartDate = task.getPlannedStartDate();

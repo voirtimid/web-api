@@ -11,6 +11,7 @@ import mk.metalkat.webapi.service.TaskService;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -170,27 +171,37 @@ public class TaskServiceImpl implements TaskService {
                 .collect(Collectors.toList());
     }
 
-//    @Override
-//    public Task startTaskWorkTime(Long taskId) {
-//        Task task = getTask(taskId);
-//        task.setStartWorkTime(LocalTime.now());
-//        task.setWorkInProgress(true);
-//        return updateTask(taskId, task);
-//    }
-//
+    @Override
+    public Task startTaskWorkTime(Long taskId) {
+        Task task = getTask(taskId);
+        if (task.isWorkInProgress()) {
+            task.setWorkInProgress(false);
+
+            long endWorkTime = LocalTime.now().toNanoOfDay();
+            Double startWorkTime = task.getTempTrackedWorkTime();
+
+            task.setTrackedWorkTime(((task.getTrackedWorkTime() + endWorkTime - startWorkTime) / 1_000_000_000) / 3_600);
+        } else {
+            double trackedTime = LocalTime.now().toNanoOfDay();
+            task.setTempTrackedWorkTime(trackedTime);
+//            task.setTrackedWorkTime(task.getTrackedWorkTime() + LocalTime.now().plusSeconds(5).toNanoOfDay() - trackedTime);
+            task.setWorkInProgress(true);
+        }
+        return updateTask(taskId, task);
+    }
+
 //    @Override
 //    public Task endTaskWorkTime(Long taskId) {
 //        Task task = getTask(taskId);
-//        task.setEndWorkTime(LocalTime.now());
 //        task.setWorkInProgress(false);
 //
-//        long startWorkTime = task.getStartWorkTime().toNanoOfDay();
-//        long endWorkTime = task.getEndWorkTime().toNanoOfDay();
+//        long endWorkTime = LocalTime.now().toNanoOfDay();
+//        Double startWorkTime = task.getTrackedWorkTime();
 //
 //        task.setTotalWorkTime(task.getTotalWorkTime() + endWorkTime - startWorkTime);
 //        return updateTask(taskId, task);
 //    }
-//
+
     @Override
     public Task completeTask(Long taskId) {
         Task task = getTask(taskId);
