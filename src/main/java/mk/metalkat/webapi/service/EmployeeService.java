@@ -17,6 +17,8 @@ public interface EmployeeService {
 
     List<Employee> getAllEmployees();
 
+    List<Employee> getCurrentEmployees();
+
     List<Task> getTasksForEmployee(Long employeeId);
 
 

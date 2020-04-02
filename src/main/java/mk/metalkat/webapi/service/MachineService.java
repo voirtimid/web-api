@@ -15,4 +15,6 @@ public interface MachineService {
     Machine delete(Long machineId);
 
     List<Machine> getAll();
+
+    List<Machine> getCurrentMachines();
 }

@@ -57,6 +57,11 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
+    public List<Employee> getCurrentEmployees() {
+        return employeeRepository.findAllByIsDeletedIsFalse();
+    }
+
+    @Override
     public List<Task> getTasksForEmployee(Long employeeId) {
         return taskRepository.findAll().stream()
                 .filter(task -> !task.isFinished())

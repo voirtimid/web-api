@@ -63,4 +63,9 @@ public class MachineServiceImpl implements MachineService {
     public List<Machine> getAll() {
         return machineRepository.findAll();
     }
+
+    @Override
+    public List<Machine> getCurrentMachines() {
+        return machineRepository.findAllByIsDeletedIsFalse();
+    }
 }

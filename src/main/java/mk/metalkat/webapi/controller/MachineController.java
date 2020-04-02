@@ -35,8 +35,13 @@ public class MachineController {
         return machineService.delete(machineId);
     }
 
-    @GetMapping
+    @GetMapping("/all")
     public List<Machine> getAllMachines() {
+        return machineService.getAll();
+    }
+
+    @GetMapping
+    public List<Machine> getCurrentMachines() {
         return machineService.getAll();
     }
 }
