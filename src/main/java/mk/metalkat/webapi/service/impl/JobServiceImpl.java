@@ -12,9 +12,7 @@ import mk.metalkat.webapi.repository.JobRepository;
 import mk.metalkat.webapi.repository.SketchRepository;
 import mk.metalkat.webapi.repository.TaskRepository;
 import mk.metalkat.webapi.service.JobService;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -81,15 +79,14 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
-    public Page<Job> getAllJobsHistoryPaged(int page, int size) {
-        return jobRepository.findAll(PageRequest.of(page, size, Sort.by("jobFinished").descending()));
+    public Page<Job> getAllInProgressJobsPaged(int page, int size) {
+        return jobRepository.findAllByIsFinishedIs(false, PageRequest.of(page, size, Sort.by("plannedStartDate").ascending()));
     }
 
-
-//    @Override
-//    public Page<Job> getAllJobsBetweenDates(LocalDate from, LocalDate to) {
-//        return null;
-//    }
+    @Override
+    public Page<Job> getAllJobsHistoryPaged(int page, int size) {
+        return jobRepository.findAllByIsFinishedIs(true, PageRequest.of(page, size, Sort.by("jobFinished").descending()));
+    }
 
     @Override
     public Job addTask(Long jobId, Task task) {

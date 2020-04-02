@@ -19,8 +19,13 @@ public class TaskController {
     private final TaskService taskService;
 
     @GetMapping
-    public List<Task> getAllTask() {
+    public List<Task> getAllTasks() {
         return taskService.getAllTasks();
+    }
+
+    @GetMapping("/inProgress")
+    public List<Task> getAllInProgressTasks() {
+        return taskService.getAllInProgressTasks();
     }
 
     @GetMapping("/machine/{machineId}")

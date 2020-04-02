@@ -23,9 +23,9 @@ public interface JobService {
 
     Page<Job> getAllJobsPaged(int page, int size);
 
-    Page<Job> getAllJobsHistoryPaged(int page, int size);
+    Page<Job> getAllInProgressJobsPaged(int page, int size);
 
-//    Page<Job> getAllJobsBetweenDates(LocalDate from, LocalDate to);
+    Page<Job> getAllJobsHistoryPaged(int page, int size);
 
     Job addTask(Long jobId, Task task);
 

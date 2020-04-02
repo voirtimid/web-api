@@ -82,6 +82,12 @@ public class TaskServiceImpl implements TaskService {
         Job updatedJob = jobRepository.saveAndFlush(job);
         task.setJob(updatedJob);
 
+        if (taskDTO.getEmployeeId() != null)
+            employeeRepository.findById(taskDTO.getEmployeeId()).ifPresent(task::setEmployee);
+        if (taskDTO.getMachineId() != null)
+            machineRepository.findById(taskDTO.getMachineId()).ifPresent(task::setMachine);
+        if (taskDTO.getCncCodeId() != null)
+            cncRepository.findById(taskDTO.getCncCodeId()).ifPresent(task::setCncCode);
 
         Task updatedTask = Task.updateTaskStatus(task);
 
@@ -119,6 +125,11 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public List<Task> getAllTasks() {
         return taskRepository.findAll();
+    }
+
+    @Override
+    public List<Task> getAllInProgressTasks() {
+        return taskRepository.findAllByIsFinishedIsFalse();
     }
 
     @Override

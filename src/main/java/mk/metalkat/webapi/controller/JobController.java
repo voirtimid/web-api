@@ -31,6 +31,12 @@ public class JobController {
         return jobService.getAllJobsPaged(page, size);
     }
 
+    @GetMapping("/paged/inProgress")
+    public Page<Job> getAllInProgressJobsPaged(@RequestHeader(name = "page", defaultValue = "0", required = false) int page,
+                                               @RequestHeader(name = "size", defaultValue = "10", required = false) int size) {
+        return jobService.getAllInProgressJobsPaged(page, size);
+    }
+
     @GetMapping("/history/paged")
     public Page<Job> getAllJobsHistoryPaged(@RequestHeader(name = "page", defaultValue = "0", required = false) int page,
                                      @RequestHeader(name = "size", defaultValue = "10", required = false) int size) {

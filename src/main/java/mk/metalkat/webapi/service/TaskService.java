@@ -21,6 +21,8 @@ public interface TaskService {
 
     List<Task> getAllTasks();
 
+    List<Task> getAllInProgressTasks();
+
     Task setMachine(Long taskId, Long machineId);
 
     Task setEmployee(Long taskId, Long employeeId);
