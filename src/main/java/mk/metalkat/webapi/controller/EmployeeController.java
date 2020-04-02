@@ -23,7 +23,7 @@ public class EmployeeController {
 
     @GetMapping()
     public List<Employee> getCurrentEmployees() {
-        return employeeService.getAllEmployees();
+        return employeeService.getCurrentEmployees();
     }
 
     @PostMapping

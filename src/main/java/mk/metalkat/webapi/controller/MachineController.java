@@ -42,6 +42,6 @@ public class MachineController {
 
     @GetMapping
     public List<Machine> getCurrentMachines() {
-        return machineService.getAll();
+        return machineService.getCurrentMachines();
     }
 }
