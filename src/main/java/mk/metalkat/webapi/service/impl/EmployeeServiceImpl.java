@@ -32,6 +32,12 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
+    public Employee getEmployeeByUserId(Long userId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new ModelNotFoundException("User doesn't exist!"));
+        return employeeRepository.findByUser(user);
+    }
+
+    @Override
     public Employee updateEmployee(Long employeeId, Employee employee) {
         if (!employeeRepository.findById(employeeId).isPresent() || !employeeId.equals(employee.getEmployeeId())) {
             throw new ModelNotFoundException("Employee doesn't exist!");

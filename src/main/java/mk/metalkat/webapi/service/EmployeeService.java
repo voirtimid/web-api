@@ -24,4 +24,6 @@ public interface EmployeeService {
 
 
     Employee createEmployeeWithUser(EmployeeDTO employeeDTO);
+
+    Employee getEmployeeByUserId(Long userId);
 }

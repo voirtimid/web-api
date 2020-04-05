@@ -32,6 +32,11 @@ public class EmployeeController {
         return employeeService.createEmployeeWithUser(employeeDTO);
     }
 
+    @GetMapping("/user/{userId}")
+    public Employee getEmployeeByUserId(@PathVariable("userId") Long userId) {
+        return employeeService.getEmployeeByUserId(userId);
+    }
+
     @PostMapping
     public Employee createEmployee(@RequestBody Employee employee) {
         return employeeService.createEmployee(employee);
