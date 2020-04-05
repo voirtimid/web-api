@@ -1,12 +1,12 @@
 package mk.metalkat.webapi.models.dto;
 
 import lombok.Data;
-import mk.metalkat.webapi.models.jpa.User;
 
 @Data
 public class UserDTO {
+    private String email;
 
-    private User user;
+    private String password;
 
-    private Long roleId;
+    private String role;
 }

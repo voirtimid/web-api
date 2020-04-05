@@ -9,8 +9,8 @@ import javax.persistence.*;
 @Entity
 @Table(name = "users")
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public class User {
 
     @Id
@@ -21,7 +21,11 @@ public class User {
 
     private String password;
 
-    @OneToOne
-    @JoinColumn(name = "role_id")
-    private Role role;
+    private String role;
+
+//    private String uuid;
+
+//    @OneToOne
+//    @JoinColumn(name = "role_id")
+//    private Role role;
 }

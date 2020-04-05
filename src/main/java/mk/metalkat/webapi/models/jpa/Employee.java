@@ -3,6 +3,8 @@ package mk.metalkat.webapi.models.jpa;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+
 import javax.persistence.*;
 
 @Data
@@ -22,7 +24,7 @@ public class Employee {
 
     private boolean isDeleted = false;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "user_id")
     private User user;
 }

@@ -1,5 +1,6 @@
 package mk.metalkat.webapi.service;
 
+import mk.metalkat.webapi.models.dto.EmployeeDTO;
 import mk.metalkat.webapi.models.jpa.Employee;
 import mk.metalkat.webapi.models.jpa.Task;
 
@@ -22,5 +23,5 @@ public interface EmployeeService {
     List<Task> getTasksForEmployee(Long employeeId);
 
 
-
+    Employee createEmployeeWithUser(EmployeeDTO employeeDTO);
 }

@@ -1,6 +1,7 @@
 package mk.metalkat.webapi.controller;
 
 import lombok.RequiredArgsConstructor;
+import mk.metalkat.webapi.models.dto.EmployeeDTO;
 import mk.metalkat.webapi.models.jpa.Employee;
 import mk.metalkat.webapi.models.jpa.Task;
 import mk.metalkat.webapi.service.EmployeeService;
@@ -24,6 +25,11 @@ public class EmployeeController {
     @GetMapping()
     public List<Employee> getCurrentEmployees() {
         return employeeService.getCurrentEmployees();
+    }
+
+    @PostMapping("/user")
+    public Employee createEmployeeWithUser(@RequestBody EmployeeDTO employeeDTO) {
+        return employeeService.createEmployeeWithUser(employeeDTO);
     }
 
     @PostMapping
