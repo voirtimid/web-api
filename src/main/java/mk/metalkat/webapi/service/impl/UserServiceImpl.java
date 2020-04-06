@@ -40,7 +40,7 @@ public class UserServiceImpl implements UserService {
             throw new ModelNotFoundException("User don't have email in the request!");
         } else {
             User userToValidate = userRepository.findByEmailEquals(user.getEmail());
-            if (userToValidate.getPassword().equals(user.getPassword())) {
+            if (userToValidate != null && userToValidate.getPassword().equals(user.getPassword())) {
                 return new ValidatedUserDTO(userToValidate.getUserId(), userToValidate.getEmail(), userToValidate.getRole(), UUID.randomUUID());
             }
         }

@@ -51,8 +51,7 @@ public class TaskServiceImpl implements TaskService {
         task.setEmployee(employee);
         Machine machine = machineRepository.findById(taskDTO.getMachineId()).orElseThrow(() -> new ModelNotFoundException("The machine does not exist"));
         task.setMachine(machine);
-        Cnc cncCode = cncRepository.findById(taskDTO.getCncCodeId()).orElseThrow(() -> new ModelNotFoundException("The cncCode does not exist"));
-        task.setCncCode(cncCode);
+        cncRepository.findById(taskDTO.getCncCodeId()).ifPresent(task::setCncCode);
 
         int size = updatedJob.getTasks().size();
         task.setTaskName(updatedJob.getJobName() + " Task " + (size + 1));

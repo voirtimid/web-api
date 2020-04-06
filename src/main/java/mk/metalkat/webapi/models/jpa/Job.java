@@ -30,6 +30,7 @@ public class Job {
     @OneToMany(mappedBy = "job", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Task> tasks = new ArrayList<>();
 
+    @Enumerated(EnumType.STRING)
     private Status status = Status.NORMAL;
 
     private LocalDate jobCreated;

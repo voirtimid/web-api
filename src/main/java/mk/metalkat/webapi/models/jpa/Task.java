@@ -39,6 +39,7 @@ public class Task {
     @JoinColumn(name = "cnc_code_id")
     private Cnc cncCode;
 
+    @Enumerated(EnumType.STRING)
     private Status status = Status.NORMAL;
 
     private String comment;
