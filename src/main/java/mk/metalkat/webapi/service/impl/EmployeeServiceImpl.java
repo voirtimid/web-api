@@ -81,7 +81,10 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public List<Employee> getCurrentEmployees() {
-        return employeeRepository.findAllByIsDeletedIsFalse();
+        return employeeRepository.findAllByIsDeletedIsFalse()
+                .stream()
+                .filter(employee -> employee.getUser().getRole().equals("Employee"))
+                .collect(Collectors.toList());
     }
 
     @Override
