@@ -83,7 +83,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     public List<Employee> getCurrentEmployees() {
         return employeeRepository.findAllByIsDeletedIsFalse()
                 .stream()
-                .filter(employee -> employee.getUser().getRole().equals("Employee"))
+                .filter(employee -> employee.getUser() == null || employee.getUser().getRole().equals("Employee"))
                 .collect(Collectors.toList());
     }
 
