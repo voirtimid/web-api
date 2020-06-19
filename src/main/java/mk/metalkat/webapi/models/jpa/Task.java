@@ -83,8 +83,10 @@ public class Task {
             } else {
                 if (plannedStartDate.isBefore(now)) {
                     task.setStatus(Status.BEHIND);
-                } else {
+                } else if (plannedStartDate.isAfter(now)) {
                     task.setStatus(Status.NORMAL);
+                } else {
+                    task.setStatus(Status.TODAY);
                 }
             }
         } else {
