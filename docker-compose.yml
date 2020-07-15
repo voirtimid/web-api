@@ -1,6 +1,6 @@
 version: '3'
 services:
-  postgres-db:
+  postgresdb:
     container_name: postgres-db
     image: postgres:latest
     restart: always
@@ -10,3 +10,22 @@ services:
       POSTGRES_USER: metalkat
       POSTGRES_PASSWORD: password
       POSTGRES_DB: metalkat-db
+
+  wp_backend:
+    container_name: wp_backend
+    image: wp_backend
+    restart: always
+    environment:
+      - "SPRING_PROFILES_ACTIVE=docker"
+    ports:
+    - "9000:8080"
+    depends_on:
+      - postgresdb
+  wp_frontend:
+    container_name: wp_frontend
+    image: wp_frontend
+    restart: always
+    ports:
+    - "80:80"
+    depends_on:
+      - wp_backend
